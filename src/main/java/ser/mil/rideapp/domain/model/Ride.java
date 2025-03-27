@@ -1,0 +1,84 @@
+package ser.mil.rideapp.domain.model;
+
+import java.util.Objects;
+
+public class Ride {
+    private final String id;
+    private final String from;
+    private final String to;
+    private final String customer;
+    private final double price;
+    private Driver driver;
+    private RideStatus status;
+
+    public Ride(String id, String from, String to, String customer, double price, RideStatus status) {
+        this.id = id;
+        this.from = from;
+        this.to = to;
+        this.customer = customer;
+        this.price = price;
+        this.status = status;
+    }
+
+
+    public String getId() {
+        return id;
+    }
+
+    public String getFrom() {
+        return from;
+    }
+
+    public String getTo() {
+        return to;
+    }
+
+    public String getCustomer() {
+        return customer;
+    }
+
+    public double getPrice() {
+        return price;
+    }
+
+    public Driver getDriver() {
+        return driver;
+    }
+
+    public void setDriver(Driver driver) {
+        this.driver = driver;
+    }
+
+    public RideStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(RideStatus status) {
+        this.status = status;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Ride ride = (Ride) o;
+        return Double.compare(price, ride.price) == 0 && Objects.equals(id, ride.id) && Objects.equals(from, ride.from) && Objects.equals(to, ride.to) && Objects.equals(customer, ride.customer) && Objects.equals(driver, ride.driver);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, from, to, customer, price, driver);
+    }
+
+    @Override
+    public String toString() {
+        return "Ride{" +
+                "id='" + id + '\'' +
+                ", from='" + from + '\'' +
+                ", to='" + to + '\'' +
+                ", customer='" + customer + '\'' +
+                ", price=" + price +
+                ", driver=" + driver +
+                '}';
+    }
+}
