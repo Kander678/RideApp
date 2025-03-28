@@ -1,5 +1,6 @@
 package ser.mil.rideapp.infrastructure.repository;
 
+import org.springframework.boot.autoconfigure.web.client.RestTemplateAutoConfiguration;
 import org.springframework.stereotype.Repository;
 import ser.mil.rideapp.domain.model.Driver;
 import ser.mil.rideapp.domain.model.Ride;
@@ -15,10 +16,12 @@ public class RideRepositoryInMemory implements RideRepository {
 
     private final List<Driver> drivers;
     private final List<Ride> rides = new ArrayList<>();
+    private final RestTemplateAutoConfiguration restTemplateAutoConfiguration;
 
-    public RideRepositoryInMemory() {
+    public RideRepositoryInMemory(RestTemplateAutoConfiguration restTemplateAutoConfiguration) {
         drivers = new ArrayList<>(List.of(new Driver("1", "Robert", "Lewandowski"),
                 new Driver("2", "Mateusz", "Maklowicz")));
+        this.restTemplateAutoConfiguration = restTemplateAutoConfiguration;
     }
 
     @Override
@@ -36,6 +39,13 @@ public class RideRepositoryInMemory implements RideRepository {
     public List<Ride> pendingRides() {
         return rides.stream()
                 .filter(ride -> ride.getStatus().equals(RideStatus.PENDING))
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<Driver> availableDrivers() {
+        return drivers.stream().
+                filter(Driver::getAvailable)
                 .collect(Collectors.toList());
     }
 
