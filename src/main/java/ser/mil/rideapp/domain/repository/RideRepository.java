@@ -12,4 +12,5 @@ public interface RideRepository {
     List<Ride> getRides();
     List<Driver> getDrivers();
 
+    List<Ride> pendingRides();
 }
