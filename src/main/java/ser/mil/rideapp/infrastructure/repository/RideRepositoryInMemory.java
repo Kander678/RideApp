@@ -16,12 +16,10 @@ public class RideRepositoryInMemory implements RideRepository {
 
     private final List<Driver> drivers;
     private final List<Ride> rides = new ArrayList<>();
-    private final RestTemplateAutoConfiguration restTemplateAutoConfiguration;
 
-    public RideRepositoryInMemory(RestTemplateAutoConfiguration restTemplateAutoConfiguration) {
+    public RideRepositoryInMemory() {
         drivers = new ArrayList<>(List.of(new Driver("1", "Robert", "Lewandowski"),
                 new Driver("2", "Mateusz", "Maklowicz")));
-        this.restTemplateAutoConfiguration = restTemplateAutoConfiguration;
     }
 
     @Override

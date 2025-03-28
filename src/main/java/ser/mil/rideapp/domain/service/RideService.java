@@ -31,7 +31,7 @@ public class RideService {
         LOGGER.debug("Rozpoczęcie procesu parowania pasażera z kierowcą...");
 
         List<Ride> rides = rideRepository.pendingRides();
-        List<Driver> drivers = rideRepository.getDrivers();
+        List<Driver> drivers = rideRepository.availableDrivers();
 
         while (!rides.isEmpty() && !drivers.isEmpty()) {
             Ride pendingRide = rides.removeFirst();
