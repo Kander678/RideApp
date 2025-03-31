@@ -56,7 +56,7 @@ class RideServiceTest {
 
         //Then
         verify(ride, times(1)).setDriver(driver);
-        verify(ride, times(1)).setStatus(RideStatus.PENDING);
+        verify(ride, times(1)).setStatus(RideStatus.FOUND);
 
         verify(driver,times(1)).setAvailable(false);
     }
@@ -78,8 +78,8 @@ class RideServiceTest {
         verify(ride1, times(1)).setDriver(driver);
         verify(ride2, never()).setDriver(driver);
 
-        verify(ride1, times(1)).setStatus(RideStatus.PENDING);
-        verify(ride2, never()).setStatus(RideStatus.PENDING);
+        verify(ride1, times(1)).setStatus(RideStatus.FOUND);
+        verify(ride2, never()).setStatus(RideStatus.FOUND);
 
         verify(driver,times(1)).setAvailable(false);
     }
@@ -103,8 +103,8 @@ class RideServiceTest {
         verify(ride1, times(1)).setDriver(driver1);
         verify(ride2, times(1)).setDriver(driver2);
 
-        verify(ride1, times(1)).setStatus(RideStatus.PENDING);
-        verify(ride2, times(1)).setStatus(RideStatus.PENDING);
+        verify(ride1, times(1)).setStatus(RideStatus.FOUND);
+        verify(ride2, times(1)).setStatus(RideStatus.FOUND);
 
         verify(driver1, times(1)).setAvailable(false);
         verify(driver2, times(1)).setAvailable(false);
@@ -121,12 +121,12 @@ class RideServiceTest {
         rideService.pairPassengerWithDriver();
 
         //Then
-        verify(ride1, never()).setDriver(null);
-        verify(ride1, never()).setStatus(RideStatus.PENDING);
+        verify(ride1, never()).setDriver(any());
+        verify(ride1, never()).setStatus(RideStatus.FOUND);
     }
 
     @Test
-    void pairPassengerWithDriver_oneRides_oneDriver() {
+    void pairPassengerWithDriver_zeroRides_oneDriver() {
         //Given
         Driver driver1 = spy(new Driver("1", "Kuba", "Matejczyk"));
         when(rideRepository.availableDrivers()).thenReturn(new ArrayList<>(List.of(driver1)));
