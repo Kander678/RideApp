@@ -43,7 +43,7 @@ class RideServiceTest {
     }
 
     @Test
-    void pairDriverWithPassengerOneWhenOne() {
+    void pairPassengerWithDriver_oneRide_oneDriver() {
         //Given
         Ride ride = spy(new Ride("1", "Lublin", "Krakow", "Kuba", 50, RideStatus.PENDING));
         Driver driver = spy(new Driver("1", "Kuba", "Matejczyk"));
@@ -57,10 +57,12 @@ class RideServiceTest {
         //Then
         verify(ride, times(1)).setDriver(driver);
         verify(ride, times(1)).setStatus(RideStatus.PENDING);
+
+        verify(driver,times(1)).setAvailable(false);
     }
 
     @Test
-    void pairDriverWithPassengerOneWhenTwo() {
+    void pairPassengerWithDriver_twoRides_oneDriver() {
         //Given
         Ride ride1 = spy(new Ride("1", "Lublin", "Krakow", "Kuba", 50, RideStatus.PENDING));
         Ride ride2 = spy(new Ride("2", "Lublin", "Krakow", "Kuba", 50, RideStatus.PENDING));
@@ -78,10 +80,12 @@ class RideServiceTest {
 
         verify(ride1, times(1)).setStatus(RideStatus.PENDING);
         verify(ride2, never()).setStatus(RideStatus.PENDING);
+
+        verify(driver,times(1)).setAvailable(false);
     }
 
     @Test
-    void pairDriverWithPassengerTwoWhenThree() {
+    void pairPassengerWithDriver_twoRides_threeDrivers() {
         //Given
         Ride ride1 = spy(new Ride("1", "Lublin", "Krakow", "Kuba", 50, RideStatus.PENDING));
         Ride ride2 = spy(new Ride("2", "Lublin", "Krakow", "Kuba", 50, RideStatus.PENDING));
@@ -108,7 +112,7 @@ class RideServiceTest {
     }
 
     @Test
-    void pairDriverWithPassengerZeroWhenOne() {
+    void pairPassengerWithDriver_oneRide_zeroDriver() {
         //Given
         Ride ride1 = spy(new Ride("1", "Lublin", "Krakow", "Kuba", 50, RideStatus.PENDING));
         when(rideRepository.pendingRides()).thenReturn(new ArrayList<>(List.of(ride1)));
@@ -122,7 +126,7 @@ class RideServiceTest {
     }
 
     @Test
-    void pairDriverWithPassengerOneWhenZero() {
+    void pairPassengerWithDriver_oneRides_oneDriver() {
         //Given
         Driver driver1 = spy(new Driver("1", "Kuba", "Matejczyk"));
         when(rideRepository.availableDrivers()).thenReturn(new ArrayList<>(List.of(driver1)));
