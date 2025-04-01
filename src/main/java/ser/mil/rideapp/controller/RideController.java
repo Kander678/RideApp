@@ -17,7 +17,7 @@ public class RideController {
 
     @PostMapping("/request")
     public void requestDrive(@RequestBody RideRequest rideRequest){
-        rideService.orderRide(rideRequest.from(),rideRequest.to(),rideRequest.customer());
+        rideService.orderRide(rideRequest.startLat(), rideRequest.startLong(), rideRequest.endLat(), rideRequest.endLong(), rideRequest.customer());
     }
 
     @GetMapping("/assignPendings")

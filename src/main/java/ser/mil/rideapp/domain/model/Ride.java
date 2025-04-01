@@ -4,14 +4,14 @@ import java.util.Objects;
 
 public class Ride {
     private final String id;
-    private final String from;
-    private final String to;
+    private final Localization from;
+    private final Localization to;
     private final String customer;
     private final double price;
     private Driver driver;
     private RideStatus status;
 
-    public Ride(String id, String from, String to, String customer, double price, RideStatus status) {
+    public Ride(String id, Localization from, Localization to, String customer, double price, RideStatus status) {
         this.id = id;
         this.from = from;
         this.to = to;
@@ -25,11 +25,11 @@ public class Ride {
         return id;
     }
 
-    public String getFrom() {
+    public Localization getFrom() {
         return from;
     }
 
-    public String getTo() {
+    public Localization getTo() {
         return to;
     }
 
@@ -57,6 +57,7 @@ public class Ride {
         this.status = status;
     }
 
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -74,11 +75,12 @@ public class Ride {
     public String toString() {
         return "Ride{" +
                 "id='" + id + '\'' +
-                ", from='" + from + '\'' +
-                ", to='" + to + '\'' +
+                ", from=" + from +
+                ", to=" + to +
                 ", customer='" + customer + '\'' +
                 ", price=" + price +
                 ", driver=" + driver +
+                ", status=" + status +
                 '}';
     }
 }

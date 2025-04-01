@@ -1,5 +1,6 @@
 package ser.mil.rideapp;
 
+
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
@@ -8,6 +9,7 @@ public class RideAppApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(RideAppApplication.class, args);
+
 	}
 
 }

@@ -1,4 +1,4 @@
 package ser.mil.rideapp.controller.request;
 
-public record RideRequest(String from, String to, String customer) {
+public record RideRequest(double startLat, double startLong, double endLat, double endLong, String customer) {
 }
