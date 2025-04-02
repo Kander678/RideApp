@@ -10,6 +10,8 @@ class PricingServiceTest {
     private static final Localization warszawa = new Localization(52, 21);
     private static final Localization krakow = new Localization(50, 19);
     private static final Localization poznan = new Localization(52, 16);
+    private static final double priceKrakowWarszawa = 525;
+    private static final double priceKrakowPoznan = 612;
 
     @Test
     void shouldCalculatePrice_betweenWarszawaAndKrakow() {
@@ -17,7 +19,7 @@ class PricingServiceTest {
         double price = pricingService.calculatePrice(warszawa, krakow);
 
         //Then
-        assertEquals(525, price);
+        assertEquals(priceKrakowWarszawa, price);
     }
 
     @Test
@@ -26,7 +28,7 @@ class PricingServiceTest {
         double price = pricingService.calculatePrice(krakow, warszawa);
 
         //Then
-        assertEquals(525, price);
+        assertEquals(priceKrakowWarszawa, price);
     }
 
     @Test
@@ -35,6 +37,6 @@ class PricingServiceTest {
         double price = pricingService.calculatePrice(krakow, poznan);
 
         //Then
-        assertEquals(612, price);
+        assertEquals(priceKrakowPoznan, price);
     }
 }

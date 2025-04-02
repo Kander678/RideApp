@@ -73,14 +73,6 @@ public class Ride {
 
     @Override
     public String toString() {
-        return "Ride{" +
-                "id='" + id + '\'' +
-                ", from=" + from +
-                ", to=" + to +
-                ", customer='" + customer + '\'' +
-                ", price=" + price +
-                ", driver=" + driver +
-                ", status=" + status +
-                '}';
+        return "Ride{" + "id='" + id + '\'' + ", from=" + from + ", to=" + to + ", customer='" + customer + '\'' + ", price=" + price + ", driver=" + driver + ", status=" + status + '}';
     }
 }

@@ -31,16 +31,15 @@ class RideServiceTest {
     @Test
     void shouldAddRide() {
         // Given
-        double startLat=52;
-        double startLon=21;
-        double endLat=50;
-        double endLon=19;
+        double startLat = 52;
+        double startLon = 21;
+        double endLat = 50;
+        double endLon = 19;
         String customer = "Kuba";
-        when(pricingService.calculatePrice(any(Localization.class), any(Localization.class)))
-                .thenReturn(50.1);
+        when(pricingService.calculatePrice(any(Localization.class), any(Localization.class))).thenReturn(50.1);
 
         // When
-        rideService.orderRide(startLat, startLon,endLat,endLon, customer);
+        rideService.orderRide(startLat, startLon, endLat, endLon, customer);
 
         // Then
         verify(rideRepository, times(1)).save(any(Ride.class));
@@ -49,8 +48,8 @@ class RideServiceTest {
     @Test
     void pairPassengerWithDriver_oneRide_oneDriver() {
         //Given
-        Localization localization1=new Localization(52,21);
-        Localization localization2=new Localization(50,19);
+        Localization localization1 = new Localization(52, 21);
+        Localization localization2 = new Localization(50, 19);
         Ride ride = spy(new Ride("1", localization1, localization2, "Kuba", 50, RideStatus.PENDING));
         Driver driver = spy(new Driver("1", "Kuba", "Matejczyk"));
 
@@ -64,14 +63,14 @@ class RideServiceTest {
         verify(ride, times(1)).setDriver(driver);
         verify(ride, times(1)).setStatus(RideStatus.FOUND);
 
-        verify(driver,times(1)).setAvailable(false);
+        verify(driver, times(1)).setAvailable(false);
     }
 
     @Test
     void pairPassengerWithDriver_twoRides_oneDriver() {
         //Given
-        Localization localization1=new Localization(52,21);
-        Localization localization2=new Localization(50,19);
+        Localization localization1 = new Localization(52, 21);
+        Localization localization2 = new Localization(50, 19);
         Ride ride1 = spy(new Ride("1", localization1, localization2, "Kuba", 50, RideStatus.PENDING));
         Ride ride2 = spy(new Ride("2", localization1, localization2, "Kuba", 50, RideStatus.PENDING));
         Driver driver = spy(new Driver("1", "Kuba", "Matejczyk"));
@@ -89,13 +88,13 @@ class RideServiceTest {
         verify(ride1, times(1)).setStatus(RideStatus.FOUND);
         verify(ride2, never()).setStatus(RideStatus.FOUND);
 
-        verify(driver,times(1)).setAvailable(false);
+        verify(driver, times(1)).setAvailable(false);
     }
 
     @Test
     void pairPassengerWithDriver_twoRides_threeDrivers() {
-        Localization localization1=new Localization(52,21);
-        Localization localization2=new Localization(50,19);
+        Localization localization1 = new Localization(52, 21);
+        Localization localization2 = new Localization(50, 19);
         //Given
         Ride ride1 = spy(new Ride("1", localization1, localization2, "Kuba", 50, RideStatus.PENDING));
         Ride ride2 = spy(new Ride("2", localization1, localization2, "Kuba", 50, RideStatus.PENDING));
@@ -124,8 +123,8 @@ class RideServiceTest {
     @Test
     void pairPassengerWithDriver_oneRide_zeroDriver() {
         //Given
-        Localization localization1=new Localization(52,21);
-        Localization localization2=new Localization(50,19);
+        Localization localization1 = new Localization(52, 21);
+        Localization localization2 = new Localization(50, 19);
         Ride ride1 = spy(new Ride("1", localization1, localization2, "Kuba", 50, RideStatus.PENDING));
         when(rideRepository.pendingRides()).thenReturn(new ArrayList<>(List.of(ride1)));
 

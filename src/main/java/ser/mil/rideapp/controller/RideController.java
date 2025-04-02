@@ -16,12 +16,12 @@ public class RideController {
     }
 
     @PostMapping("/request")
-    public void requestDrive(@RequestBody RideRequest rideRequest){
+    public void requestDrive(@RequestBody RideRequest rideRequest) {
         rideService.orderRide(rideRequest.startLat(), rideRequest.startLong(), rideRequest.endLat(), rideRequest.endLong(), rideRequest.customer());
     }
 
     @GetMapping("/assignPendings")
-    public void getPending(){
+    public void getPending() {
         rideService.pairPassengerWithDriver();
     }
 

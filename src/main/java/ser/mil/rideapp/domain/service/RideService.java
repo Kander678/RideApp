@@ -43,12 +43,10 @@ public class RideService {
             pendingRide.setStatus(RideStatus.FOUND);
             availableDriver.setAvailable(false);
 
-            LOGGER.info("Pasażer {} został sparowany z kierowcą {}",
-                    pendingRide.getCustomer(), availableDriver.getFirstName());
+            LOGGER.info("Pasażer {} został sparowany z kierowcą {}", pendingRide.getCustomer(), availableDriver.getFirstName());
         }
 
-        LOGGER.debug("Zakończono proces parowania. Pozostało {} oczekujących przejazdów i {} dostępnych kierowców.",
-                rides.size(), drivers.size());
+        LOGGER.debug("Zakończono proces parowania. Pozostało {} oczekujących przejazdów i {} dostępnych kierowców.", rides.size(), drivers.size());
     }
 
 }

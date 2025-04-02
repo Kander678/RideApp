@@ -3,15 +3,13 @@ package ser.mil.rideapp.domain.service;
 import org.springframework.stereotype.Component;
 import ser.mil.rideapp.domain.model.Localization;
 
-import java.util.*;
-
 @Component
 public class PricingService {
 
     public double calculatePrice(Localization startLocalization, Localization endLocalization) {
-        double converter=2;
-        double distance=calculateDistance(startLocalization.getLat(), startLocalization.getLon(), endLocalization.getLat(), endLocalization.getLon());
-        return Math.round(converter*distance);
+        double converter = 2;
+        double distance = calculateDistance(startLocalization.lat(), startLocalization.lon(), endLocalization.lat(), endLocalization.lon());
+        return Math.round(converter * distance);
     }
 
     public double haversine(double val) {
@@ -20,7 +18,7 @@ public class PricingService {
 
     public double calculateDistance(double startLat, double startLong, double endLat, double endLong) {
 
-        final double EARTH_RADIUS=6371;
+        final double EARTH_RADIUS = 6371;
 
         double dLat = Math.toRadians((endLat - startLat));
         double dLong = Math.toRadians((endLong - startLong));
