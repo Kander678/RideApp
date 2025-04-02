@@ -1,15 +1,21 @@
 package ser.mil.rideapp.domain.service;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import ser.mil.rideapp.domain.model.Localization;
 
 @Component
 public class PricingService {
+    private static final Logger LOGGER = LoggerFactory.getLogger(RideService.class);
 
     public double calculatePrice(Localization startLocalization, Localization endLocalization) {
+        LOGGER.debug("Calculating Price from localization {} to localization {}", startLocalization, endLocalization);
         double converter = 2;
         double distance = calculateDistance(startLocalization.lat(), startLocalization.lon(), endLocalization.lat(), endLocalization.lon());
-        return Math.round(converter * distance);
+        double price = Math.round(converter * distance);
+        LOGGER.info("price for a ride from localization {} to localization {} is {}", startLocalization, endLocalization, price);
+        return price;
     }
 
     public double haversine(double val) {
