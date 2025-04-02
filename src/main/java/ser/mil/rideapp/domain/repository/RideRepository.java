@@ -9,9 +9,12 @@ import java.util.List;
 @Component
 public interface RideRepository {
     void save(Ride ride);
+
     List<Ride> getRides();
+
     List<Driver> getDrivers();
 
     List<Ride> pendingRides();
+
     List<Driver> availableDrivers();
 }

@@ -35,11 +35,6 @@ public class Driver {
 
     @Override
     public String toString() {
-        return "Driver{" +
-                "id='" + id + '\'' +
-                ", firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", available=" + available +
-                '}';
+        return "Driver{" + "id='" + id + '\'' + ", firstName='" + firstName + '\'' + ", lastName='" + lastName + '\'' + ", available=" + available + '}';
     }
 }

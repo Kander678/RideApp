@@ -4,12 +4,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import ser.mil.rideapp.domain.model.Driver;
+import ser.mil.rideapp.domain.model.Localization;
 import ser.mil.rideapp.domain.model.Ride;
 import ser.mil.rideapp.domain.model.RideStatus;
 import ser.mil.rideapp.domain.repository.RideRepository;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Component
 public class RideService {
@@ -22,9 +22,11 @@ public class RideService {
         this.rideRepository = rideRepository;
     }
 
-    public void orderRide(String from, String to, String customer) {
-        double price=pricingService.calculatePrice(from,to);
-        rideRepository.save(new Ride("1",from, to, customer, price, RideStatus.PENDING));
+    public void orderRide(double startLat, double startLon, double endLat, double endLon, String customer) {
+        Localization startLocalization = new Localization(startLat, startLon);
+        Localization endLocalization = new Localization(endLat, endLon);
+        double price = pricingService.calculatePrice(startLocalization, endLocalization);
+        rideRepository.save(new Ride("1", startLocalization, endLocalization, customer, price, RideStatus.PENDING));
     }
 
     public void pairPassengerWithDriver() {
@@ -41,12 +43,10 @@ public class RideService {
             pendingRide.setStatus(RideStatus.FOUND);
             availableDriver.setAvailable(false);
 
-            LOGGER.info("Pasażer {} został sparowany z kierowcą {}",
-                    pendingRide.getCustomer(), availableDriver.getFirstName());
+            LOGGER.info("Pasażer {} został sparowany z kierowcą {}", pendingRide.getCustomer(), availableDriver.getFirstName());
         }
 
-        LOGGER.debug("Zakończono proces parowania. Pozostało {} oczekujących przejazdów i {} dostępnych kierowców.",
-                rides.size(), drivers.size());
+        LOGGER.debug("Zakończono proces parowania. Pozostało {} oczekujących przejazdów i {} dostępnych kierowców.", rides.size(), drivers.size());
     }
 
 }
