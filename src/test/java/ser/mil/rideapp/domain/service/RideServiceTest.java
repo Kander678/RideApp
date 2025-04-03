@@ -5,10 +5,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import ser.mil.rideapp.domain.model.Driver;
-import ser.mil.rideapp.domain.model.Localization;
-import ser.mil.rideapp.domain.model.Ride;
-import ser.mil.rideapp.domain.model.RideStatus;
+import ser.mil.rideapp.domain.model.*;
 import ser.mil.rideapp.domain.repository.RideRepository;
 
 import java.util.ArrayList;
@@ -28,6 +25,7 @@ class RideServiceTest {
     @InjectMocks
     private RideService rideService;
 
+    private static final Currency USD=Currency.USD;
     @Test
     void shouldAddRide() {
         // Given
@@ -36,10 +34,11 @@ class RideServiceTest {
         double endLat = 50;
         double endLon = 19;
         String customer = "Kuba";
-        when(pricingService.calculatePrice(any(Localization.class), any(Localization.class))).thenReturn(50.1);
+        Price price1=new Price(30, USD);
+        when(pricingService.calculatePrice(any(Localization.class), any(Localization.class),eq(USD))).thenReturn(price1);
 
         // When
-        rideService.orderRide(startLat, startLon, endLat, endLon, customer);
+        rideService.orderRide(startLat, startLon, endLat, endLon, customer,USD);
 
         // Then
         verify(rideRepository, times(1)).save(any(Ride.class));
@@ -50,7 +49,8 @@ class RideServiceTest {
         //Given
         Localization localization1 = new Localization(52, 21);
         Localization localization2 = new Localization(50, 19);
-        Ride ride = spy(new Ride("1", localization1, localization2, "Kuba", 50, RideStatus.PENDING));
+        Price price1=new Price(30,USD);
+        Ride ride = spy(new Ride("1", localization1, localization2, "Kuba", price1, RideStatus.PENDING));
         Driver driver = spy(new Driver("1", "Kuba", "Matejczyk"));
 
         when(rideRepository.pendingRides()).thenReturn(new ArrayList<>(List.of(ride)));
@@ -71,8 +71,9 @@ class RideServiceTest {
         //Given
         Localization localization1 = new Localization(52, 21);
         Localization localization2 = new Localization(50, 19);
-        Ride ride1 = spy(new Ride("1", localization1, localization2, "Kuba", 50, RideStatus.PENDING));
-        Ride ride2 = spy(new Ride("2", localization1, localization2, "Kuba", 50, RideStatus.PENDING));
+        Price price1=new Price(30,USD);
+        Ride ride1 = spy(new Ride("1", localization1, localization2, "Kuba", price1, RideStatus.PENDING));
+        Ride ride2 = spy(new Ride("2", localization1, localization2, "Kuba", price1, RideStatus.PENDING));
         Driver driver = spy(new Driver("1", "Kuba", "Matejczyk"));
 
         when(rideRepository.pendingRides()).thenReturn(new ArrayList<>(List.of(ride1, ride2)));
@@ -95,9 +96,10 @@ class RideServiceTest {
     void pairPassengerWithDriver_twoRides_threeDrivers() {
         Localization localization1 = new Localization(52, 21);
         Localization localization2 = new Localization(50, 19);
+        Price price1=new Price(30,USD);
         //Given
-        Ride ride1 = spy(new Ride("1", localization1, localization2, "Kuba", 50, RideStatus.PENDING));
-        Ride ride2 = spy(new Ride("2", localization1, localization2, "Kuba", 50, RideStatus.PENDING));
+        Ride ride1 = spy(new Ride("1", localization1, localization2, "Kuba", price1, RideStatus.PENDING));
+        Ride ride2 = spy(new Ride("2", localization1, localization2, "Kuba", price1, RideStatus.PENDING));
         Driver driver1 = spy(new Driver("1", "Kuba", "Matejczyk"));
         Driver driver2 = spy(new Driver("2", "Kuba", "Matejczyk"));
         Driver driver3 = spy(new Driver("3", "Kuba", "Matejczyk"));
@@ -125,7 +127,8 @@ class RideServiceTest {
         //Given
         Localization localization1 = new Localization(52, 21);
         Localization localization2 = new Localization(50, 19);
-        Ride ride1 = spy(new Ride("1", localization1, localization2, "Kuba", 50, RideStatus.PENDING));
+        Price price1=new Price(30,USD);
+        Ride ride1 = spy(new Ride("1", localization1, localization2, "Kuba", price1, RideStatus.PENDING));
         when(rideRepository.pendingRides()).thenReturn(new ArrayList<>(List.of(ride1)));
 
         //When

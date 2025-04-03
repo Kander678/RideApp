@@ -7,11 +7,11 @@ public class Ride {
     private final Localization from;
     private final Localization to;
     private final String customer;
-    private final double price;
+    private final Price price;
     private Driver driver;
     private RideStatus status;
 
-    public Ride(String id, Localization from, Localization to, String customer, double price, RideStatus status) {
+    public Ride(String id, Localization from, Localization to, String customer, Price price, RideStatus status) {
         this.id = id;
         this.from = from;
         this.to = to;
@@ -37,7 +37,7 @@ public class Ride {
         return customer;
     }
 
-    public double getPrice() {
+    public Price getPrice() {
         return price;
     }
 
@@ -57,13 +57,12 @@ public class Ride {
         this.status = status;
     }
 
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Ride ride = (Ride) o;
-        return Double.compare(price, ride.price) == 0 && Objects.equals(id, ride.id) && Objects.equals(from, ride.from) && Objects.equals(to, ride.to) && Objects.equals(customer, ride.customer) && Objects.equals(driver, ride.driver);
+        return Objects.equals(id, ride.id) && Objects.equals(from, ride.from) && Objects.equals(to, ride.to) && Objects.equals(customer, ride.customer) && Objects.equals(price, ride.price) && Objects.equals(driver, ride.driver) && status == ride.status;
     }
 
     @Override
