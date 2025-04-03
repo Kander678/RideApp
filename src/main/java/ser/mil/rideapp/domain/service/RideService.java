@@ -19,10 +19,10 @@ public class RideService {
         this.rideRepository = rideRepository;
     }
 
-    public void orderRide(double startLat, double startLon, double endLat, double endLon, String customer,Currency currency) {
+    public void orderRide(double startLat, double startLon, double endLat, double endLon, String customer, Currency baseCurrency, Currency finalCurrency) {
         Localization startLocalization = new Localization(startLat, startLon);
         Localization endLocalization = new Localization(endLat, endLon);
-        Price price = pricingService.calculatePrice(startLocalization, endLocalization,currency);
+        Price price = pricingService.calculatePrice(startLocalization, endLocalization, baseCurrency, finalCurrency);
         rideRepository.save(new Ride("1", startLocalization, endLocalization, customer, price, RideStatus.PENDING));
     }
 

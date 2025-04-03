@@ -8,19 +8,19 @@ import ser.mil.rideapp.domain.model.Localization;
 import ser.mil.rideapp.domain.model.Price;
 
 @Component
-public class PricingService {
+public class PricingService extends CurrencyExchangeService {
     private static final Logger LOGGER = LoggerFactory.getLogger(RideService.class);
+    private static final double PLN_PER_KM = 2;
 
-    private static final double RATE_PER_KM = 2;
-
-    public Price calculatePrice(Localization startLocalization, Localization endLocalization, Currency currency) {
+    public Price calculatePrice(Localization startLocalization, Localization endLocalization, Currency baseCurrency, Currency finalCurrency) {
         CurrencyExchangeService currencyExchangeService = new CurrencyExchangeService();
         LOGGER.debug("Calculating Price from localization {} to localization {}", startLocalization, endLocalization);
         double distance = calculateDistance(startLocalization.lat(), startLocalization.lon(), endLocalization.lat(), endLocalization.lon());
-        distance = distance * RATE_PER_KM;
-        Price priceAfterConvert = currencyExchangeService.convertPrice(distance, currency);
-        LOGGER.info("price for a ride from localization {} to localization {} is {}", startLocalization, endLocalization, priceAfterConvert);
-        return priceAfterConvert;
+        distance = distance * PLN_PER_KM;
+        Price priceWithBaseCurrency = new Price(distance, baseCurrency);
+        Price convertedPrice = currencyExchangeService.convertPrice(priceWithBaseCurrency, finalCurrency);
+        LOGGER.info("price for a ride from localization {} to localization {} is {}", startLocalization, endLocalization, convertedPrice);
+        return convertedPrice;
     }
 
     public double haversine(double val) {

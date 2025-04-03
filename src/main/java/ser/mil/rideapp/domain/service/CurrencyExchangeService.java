@@ -6,22 +6,26 @@ import ser.mil.rideapp.domain.model.Price;
 public class CurrencyExchangeService {
     private static final double EURO_TO_PLN = 4.20;
     private static final double USD_TO_PLN = 3.80;
-    public Price convertPrice(double distance,Currency currency){
-        double finalAmount;
-        switch (currency) {
-            case EURO:
-                finalAmount = Math.round(distance/EURO_TO_PLN);
-                currency=Currency.EURO;
-                break;
-            case USD:
-                finalAmount = Math.round(distance/USD_TO_PLN);
-                currency=Currency.USD;
-                break;
-            default:
-                finalAmount = Math.round(distance);
-                currency=Currency.PLN;
-                break;
-        }
-        return new Price(finalAmount,currency);
+    private static final double CHF_TO_PLN = 4.45;
+
+    private double convertPriceToPln(Price price) {
+        double convertToPln = switch (price.currency()) {
+            case EURO -> price.amount() * EURO_TO_PLN;
+            case USD -> price.amount() * USD_TO_PLN;
+            case PLN -> price.amount();
+            case CHF -> price.amount() * CHF_TO_PLN;
+        };
+        return convertToPln;
+    }
+
+    public Price convertPrice(Price price, Currency targetCurrency) {
+        double convertedPrice = convertPriceToPln(price);
+        convertedPrice = switch (targetCurrency) {
+            case EURO -> Math.round(convertedPrice / EURO_TO_PLN);
+            case USD -> Math.round(convertedPrice / USD_TO_PLN);
+            case PLN -> Math.round(convertedPrice);
+            case CHF -> Math.round(convertedPrice / CHF_TO_PLN);
+        };
+        return new Price(convertedPrice, targetCurrency);
     }
 }

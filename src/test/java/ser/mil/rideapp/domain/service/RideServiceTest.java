@@ -13,6 +13,7 @@ import java.util.List;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
+import static ser.mil.rideapp.domain.model.Currency.PLN;
 
 @ExtendWith(MockitoExtension.class)
 class RideServiceTest {
@@ -34,11 +35,11 @@ class RideServiceTest {
         double endLat = 50;
         double endLon = 19;
         String customer = "Kuba";
-        Price price1=new Price(30, USD);
-        when(pricingService.calculatePrice(any(Localization.class), any(Localization.class),eq(USD))).thenReturn(price1);
+        Price price=new Price(30, USD);
+        when(pricingService.calculatePrice(any(Localization.class), any(Localization.class),eq(USD),eq(PLN))).thenReturn(price);
 
         // When
-        rideService.orderRide(startLat, startLon, endLat, endLon, customer,USD);
+        rideService.orderRide(startLat, startLon, endLat, endLon, customer,USD,PLN);
 
         // Then
         verify(rideRepository, times(1)).save(any(Ride.class));
@@ -49,8 +50,8 @@ class RideServiceTest {
         //Given
         Localization localization1 = new Localization(52, 21);
         Localization localization2 = new Localization(50, 19);
-        Price price1=new Price(30,USD);
-        Ride ride = spy(new Ride("1", localization1, localization2, "Kuba", price1, RideStatus.PENDING));
+        Price price=new Price(30,USD);
+        Ride ride = spy(new Ride("1", localization1, localization2, "Kuba", price, RideStatus.PENDING));
         Driver driver = spy(new Driver("1", "Kuba", "Matejczyk"));
 
         when(rideRepository.pendingRides()).thenReturn(new ArrayList<>(List.of(ride)));
@@ -71,9 +72,9 @@ class RideServiceTest {
         //Given
         Localization localization1 = new Localization(52, 21);
         Localization localization2 = new Localization(50, 19);
-        Price price1=new Price(30,USD);
-        Ride ride1 = spy(new Ride("1", localization1, localization2, "Kuba", price1, RideStatus.PENDING));
-        Ride ride2 = spy(new Ride("2", localization1, localization2, "Kuba", price1, RideStatus.PENDING));
+        Price price=new Price(30,USD);
+        Ride ride1 = spy(new Ride("1", localization1, localization2, "Kuba", price, RideStatus.PENDING));
+        Ride ride2 = spy(new Ride("2", localization1, localization2, "Kuba", price, RideStatus.PENDING));
         Driver driver = spy(new Driver("1", "Kuba", "Matejczyk"));
 
         when(rideRepository.pendingRides()).thenReturn(new ArrayList<>(List.of(ride1, ride2)));
@@ -96,10 +97,10 @@ class RideServiceTest {
     void pairPassengerWithDriver_twoRides_threeDrivers() {
         Localization localization1 = new Localization(52, 21);
         Localization localization2 = new Localization(50, 19);
-        Price price1=new Price(30,USD);
+        Price price=new Price(30,USD);
         //Given
-        Ride ride1 = spy(new Ride("1", localization1, localization2, "Kuba", price1, RideStatus.PENDING));
-        Ride ride2 = spy(new Ride("2", localization1, localization2, "Kuba", price1, RideStatus.PENDING));
+        Ride ride1 = spy(new Ride("1", localization1, localization2, "Kuba", price, RideStatus.PENDING));
+        Ride ride2 = spy(new Ride("2", localization1, localization2, "Kuba", price, RideStatus.PENDING));
         Driver driver1 = spy(new Driver("1", "Kuba", "Matejczyk"));
         Driver driver2 = spy(new Driver("2", "Kuba", "Matejczyk"));
         Driver driver3 = spy(new Driver("3", "Kuba", "Matejczyk"));
@@ -127,29 +128,29 @@ class RideServiceTest {
         //Given
         Localization localization1 = new Localization(52, 21);
         Localization localization2 = new Localization(50, 19);
-        Price price1=new Price(30,USD);
-        Ride ride1 = spy(new Ride("1", localization1, localization2, "Kuba", price1, RideStatus.PENDING));
-        when(rideRepository.pendingRides()).thenReturn(new ArrayList<>(List.of(ride1)));
+        Price price=new Price(30,USD);
+        Ride ride = spy(new Ride("1", localization1, localization2, "Kuba", price, RideStatus.PENDING));
+        when(rideRepository.pendingRides()).thenReturn(new ArrayList<>(List.of(ride)));
 
         //When
         rideService.pairPassengerWithDriver();
 
         //Then
-        verify(ride1, never()).setDriver(any());
-        verify(ride1, never()).setStatus(RideStatus.FOUND);
+        verify(ride, never()).setDriver(any());
+        verify(ride, never()).setStatus(RideStatus.FOUND);
     }
 
     @Test
     void pairPassengerWithDriver_zeroRides_oneDriver() {
         //Given
-        Driver driver1 = spy(new Driver("1", "Kuba", "Matejczyk"));
-        when(rideRepository.availableDrivers()).thenReturn(new ArrayList<>(List.of(driver1)));
+        Driver driver = spy(new Driver("1", "Kuba", "Matejczyk"));
+        when(rideRepository.availableDrivers()).thenReturn(new ArrayList<>(List.of(driver)));
 
         //When
         rideService.pairPassengerWithDriver();
 
         //Then
-        verify(driver1, never()).setAvailable(false);
+        verify(driver, never()).setAvailable(false);
     }
 
 }
