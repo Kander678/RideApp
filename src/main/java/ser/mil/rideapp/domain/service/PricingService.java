@@ -3,19 +3,34 @@ package ser.mil.rideapp.domain.service;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
+import ser.mil.rideapp.domain.model.Currency;
 import ser.mil.rideapp.domain.model.Localization;
+import ser.mil.rideapp.domain.model.Price;
+
+import static ser.mil.rideapp.domain.model.Currency.PLN;
 
 @Component
 public class PricingService {
-    private static final Logger LOGGER = LoggerFactory.getLogger(RideService.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(PricingService.class);
+    private static final double PLN_PER_KM = 2;
 
-    public double calculatePrice(Localization startLocalization, Localization endLocalization) {
+    private final CurrencyExchangeService currencyExchangeService;
+
+    public PricingService(CurrencyExchangeService currencyExchangeService) {
+        this.currencyExchangeService = currencyExchangeService;
+    }
+
+    public Price calculatePrice(Localization startLocalization, Localization endLocalization, Currency baseCurrency, Currency finalCurrency) {
+
         LOGGER.debug("Calculating Price from localization {} to localization {}", startLocalization, endLocalization);
-        double converter = 2;
+
         double distance = calculateDistance(startLocalization.lat(), startLocalization.lon(), endLocalization.lat(), endLocalization.lon());
-        double price = Math.round(converter * distance);
-        LOGGER.info("price for a ride from localization {} to localization {} is {}", startLocalization, endLocalization, price);
-        return price;
+        double priceInPln = distance * PLN_PER_KM;
+
+        Price priceWithBaseCurrency = currencyExchangeService.convertPrice(new Price(priceInPln, PLN), baseCurrency);
+        Price convertedPrice = currencyExchangeService.convertPrice(priceWithBaseCurrency, finalCurrency);
+        LOGGER.info("price for a ride from localization {} to localization {} is {}", startLocalization, endLocalization, convertedPrice);
+        return convertedPrice;
     }
 
     public double haversine(double val) {

@@ -3,10 +3,7 @@ package ser.mil.rideapp.domain.service;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
-import ser.mil.rideapp.domain.model.Driver;
-import ser.mil.rideapp.domain.model.Localization;
-import ser.mil.rideapp.domain.model.Ride;
-import ser.mil.rideapp.domain.model.RideStatus;
+import ser.mil.rideapp.domain.model.*;
 import ser.mil.rideapp.domain.repository.RideRepository;
 
 import java.util.List;
@@ -22,10 +19,10 @@ public class RideService {
         this.rideRepository = rideRepository;
     }
 
-    public void orderRide(double startLat, double startLon, double endLat, double endLon, String customer) {
+    public void orderRide(double startLat, double startLon, double endLat, double endLon, String customer, Currency baseCurrency, Currency finalCurrency) {
         Localization startLocalization = new Localization(startLat, startLon);
         Localization endLocalization = new Localization(endLat, endLon);
-        double price = pricingService.calculatePrice(startLocalization, endLocalization);
+        Price price = pricingService.calculatePrice(startLocalization, endLocalization, baseCurrency, finalCurrency);
         rideRepository.save(new Ride("1", startLocalization, endLocalization, customer, price, RideStatus.PENDING));
     }
 
