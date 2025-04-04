@@ -8,7 +8,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static ser.mil.rideapp.domain.model.Currency.*;
 
 class PricingServiceTest {
-    private PricingService pricingService = new PricingService();
+    private final PricingService pricingService = new PricingService(new CurrencyExchangeService());
     private static final Localization WARSZAWA = new Localization(52, 21);
     private static final Localization KRAKOW = new Localization(50, 19);
     private static final Localization POZNAN = new Localization(52, 16);

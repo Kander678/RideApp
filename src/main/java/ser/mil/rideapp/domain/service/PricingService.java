@@ -7,19 +7,25 @@ import ser.mil.rideapp.domain.model.Currency;
 import ser.mil.rideapp.domain.model.Localization;
 import ser.mil.rideapp.domain.model.Price;
 
-import static ser.mil.rideapp.domain.model.Currency.*;
+import static ser.mil.rideapp.domain.model.Currency.PLN;
 
 @Component
-public class PricingService extends CurrencyExchangeService {
-    private static final Logger LOGGER = LoggerFactory.getLogger(RideService.class);
+public class PricingService {
+    private static final Logger LOGGER = LoggerFactory.getLogger(PricingService.class);
     private static final double PLN_PER_KM = 2;
 
+    private final CurrencyExchangeService currencyExchangeService;
+
+    public PricingService(CurrencyExchangeService currencyExchangeService) {
+        this.currencyExchangeService = currencyExchangeService;
+    }
+
     public Price calculatePrice(Localization startLocalization, Localization endLocalization, Currency baseCurrency, Currency finalCurrency) {
-        CurrencyExchangeService currencyExchangeService = new CurrencyExchangeService();
+
         LOGGER.debug("Calculating Price from localization {} to localization {}", startLocalization, endLocalization);
 
         double distance = calculateDistance(startLocalization.lat(), startLocalization.lon(), endLocalization.lat(), endLocalization.lon());
-        double priceInPln=distance*PLN_PER_KM;
+        double priceInPln = distance * PLN_PER_KM;
 
         Price priceWithBaseCurrency = currencyExchangeService.convertPrice(new Price(priceInPln, PLN), baseCurrency);
         Price convertedPrice = currencyExchangeService.convertPrice(priceWithBaseCurrency, finalCurrency);
