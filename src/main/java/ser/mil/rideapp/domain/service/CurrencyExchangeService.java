@@ -1,5 +1,7 @@
 package ser.mil.rideapp.domain.service;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import ser.mil.rideapp.domain.model.Currency;
 import ser.mil.rideapp.domain.model.Price;
 
@@ -7,6 +9,21 @@ public class CurrencyExchangeService {
     private static final double EURO_TO_PLN = 4.20;
     private static final double USD_TO_PLN = 3.80;
     private static final double CHF_TO_PLN = 4.45;
+    private static final Logger LOGGER = LoggerFactory.getLogger(RideService.class);
+
+    public Price convertPrice(Price price, Currency targetCurrency) {
+        LOGGER.debug("Converting price {} from {} to {}", price.amount(), price.currency(), targetCurrency);
+        double convertedPrice = convertPriceToPln(price);
+        convertedPrice = switch (targetCurrency) {
+            case EURO -> Math.round(convertedPrice / EURO_TO_PLN);
+            case USD -> Math.round(convertedPrice / USD_TO_PLN);
+            case PLN -> Math.round(convertedPrice);
+            case CHF -> Math.round(convertedPrice / CHF_TO_PLN);
+        };
+        Price priceAfterConversion = new Price(convertedPrice, targetCurrency);
+        LOGGER.info("price after conversion is {}", priceAfterConversion);
+        return priceAfterConversion;
+    }
 
     private double convertPriceToPln(Price price) {
         double convertToPln = switch (price.currency()) {
@@ -18,14 +35,5 @@ public class CurrencyExchangeService {
         return convertToPln;
     }
 
-    public Price convertPrice(Price price, Currency targetCurrency) {
-        double convertedPrice = convertPriceToPln(price);
-        convertedPrice = switch (targetCurrency) {
-            case EURO -> Math.round(convertedPrice / EURO_TO_PLN);
-            case USD -> Math.round(convertedPrice / USD_TO_PLN);
-            case PLN -> Math.round(convertedPrice);
-            case CHF -> Math.round(convertedPrice / CHF_TO_PLN);
-        };
-        return new Price(convertedPrice, targetCurrency);
-    }
 }
+

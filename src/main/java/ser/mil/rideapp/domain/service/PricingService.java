@@ -7,6 +7,8 @@ import ser.mil.rideapp.domain.model.Currency;
 import ser.mil.rideapp.domain.model.Localization;
 import ser.mil.rideapp.domain.model.Price;
 
+import static ser.mil.rideapp.domain.model.Currency.*;
+
 @Component
 public class PricingService extends CurrencyExchangeService {
     private static final Logger LOGGER = LoggerFactory.getLogger(RideService.class);
@@ -15,9 +17,11 @@ public class PricingService extends CurrencyExchangeService {
     public Price calculatePrice(Localization startLocalization, Localization endLocalization, Currency baseCurrency, Currency finalCurrency) {
         CurrencyExchangeService currencyExchangeService = new CurrencyExchangeService();
         LOGGER.debug("Calculating Price from localization {} to localization {}", startLocalization, endLocalization);
+
         double distance = calculateDistance(startLocalization.lat(), startLocalization.lon(), endLocalization.lat(), endLocalization.lon());
-        distance = distance * PLN_PER_KM;
-        Price priceWithBaseCurrency = new Price(distance, baseCurrency);
+        double priceInPln=distance*PLN_PER_KM;
+
+        Price priceWithBaseCurrency = currencyExchangeService.convertPrice(new Price(priceInPln, PLN), baseCurrency);
         Price convertedPrice = currencyExchangeService.convertPrice(priceWithBaseCurrency, finalCurrency);
         LOGGER.info("price for a ride from localization {} to localization {} is {}", startLocalization, endLocalization, convertedPrice);
         return convertedPrice;

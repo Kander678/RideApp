@@ -12,7 +12,7 @@ class PricingServiceTest {
     private static final Localization WARSZAWA = new Localization(52, 21);
     private static final Localization KRAKOW = new Localization(50, 19);
     private static final Localization POZNAN = new Localization(52, 16);
-    private static final double PRICE_KRAKOW_POZNAN_PLN_TO_CHF = 137;
+    private static final double PRICE_KRAKOW_POZNAN_PLN_TO_CHF = 138;
     private static final double PRICE_KRAKOW_POZNAN_PLN_TO_EURO = 146;
     private static final double PRICE_KRAKOW_POZNAN_PLN_TO_USD=161;
     private static final double PRICE_WARSZAWA_KRAKOW_PLN_TO_EURO = 125;
