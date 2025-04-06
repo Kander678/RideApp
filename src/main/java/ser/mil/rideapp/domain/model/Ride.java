@@ -20,6 +20,15 @@ public class Ride {
         this.status = status;
     }
 
+    public Ride(String id, Localization from, Localization to, String customer, Price price, Driver driver, RideStatus status) {
+        this.id = id;
+        this.from = from;
+        this.to = to;
+        this.customer = customer;
+        this.price = price;
+        this.driver = driver;
+        this.status = status;
+    }
 
     public String getId() {
         return id;

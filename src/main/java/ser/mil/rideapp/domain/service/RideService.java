@@ -2,6 +2,7 @@ package ser.mil.rideapp.domain.service;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 import ser.mil.rideapp.domain.model.*;
 import ser.mil.rideapp.domain.repository.RideRepository;
@@ -14,9 +15,9 @@ public class RideService {
     private final RideRepository rideRepository;
     private static final Logger LOGGER = LoggerFactory.getLogger(RideService.class);
 
-    public RideService(PricingService pricingService, RideRepository rideRepository) {
+    public RideService(PricingService pricingService, RideRepository rideRepositorySQL) {
         this.pricingService = pricingService;
-        this.rideRepository = rideRepository;
+        this.rideRepository = rideRepositorySQL;
     }
 
     public void orderRide(double startLat, double startLon, double endLat, double endLon, String customer, Currency baseCurrency, Currency finalCurrency) {
