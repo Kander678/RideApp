@@ -1,4 +1,4 @@
-package ser.mil.rideapp.infrastructure.repository;
+package ser.mil.rideapp.infrastructure.database.inmemory.repository;
 
 import org.springframework.boot.autoconfigure.web.client.RestTemplateAutoConfiguration;
 import org.springframework.stereotype.Repository;
