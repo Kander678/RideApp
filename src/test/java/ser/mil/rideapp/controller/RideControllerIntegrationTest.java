@@ -71,33 +71,55 @@ class RideControllerIntegrationTest {
     }
 
     @Test
-    void shouldPairPassengerWithDriver() {
-        Ride ride = new Ride(
+    void pairPassengerWithDriver_oneRide_oneDriver() {
+        //Given
+        Ride ride1 = new Ride(
                 "1",
                 new Localization(52,21),
                 new Localization(50,19),
                 "Kuba",
                 new Price(50,Currency.PLN),
                 RideStatus.PENDING);
-        rideRepositorySQL.save(ride);
-        System.out.println("********************************");
-        System.out.println(rideRepositorySQL.availableDrivers());
-        System.out.println(rideRepositorySQL.pendingRides());
-        System.out.println("********************************");
+        rideRepositorySQL.save(ride1);
 
-
+        //When
         webTestClient.get()
                 .uri("/ride/assignPendings")
                 .exchange()
                 .expectStatus().isOk();
 
-
-
-        System.out.println("********************************");
-        System.out.println(rideRepositorySQL.availableDrivers());
-        System.out.println(rideRepositorySQL.pendingRides());
-        System.out.println("********************************");
-
+        //Then
+        Ride ride2=rideRepositorySQL.getRides().stream().filter(rides->rides.getStatus().equals(RideStatus.FOUND)).findFirst().get();
         assertEquals(0,rideRepositorySQL.pendingRides().size());
+        assertEquals(ride1.getFrom(),ride2.getFrom());
+        assertEquals(ride1.getTo(),ride2.getTo());
+        assertEquals(ride1.getCustomer(),ride2.getCustomer());
+        assertNotEquals(ride1.getStatus(),ride2.getStatus());
+        assertEquals(ride1.getPrice(),ride2.getPrice());
+    }
+    @Test
+    void pairPassengerWithDriver_threeRide_twoDriver(){
+        //Given
+        Ride ride1 = new Ride("1", new Localization(52,21), new Localization(50,19), "Kuba",
+                new Price(50,Currency.PLN), RideStatus.PENDING);
+        Ride ride2 = new Ride("2", new Localization(53,22), new Localization(51,20), "Marcin",
+                new Price(51,Currency.USD), RideStatus.PENDING);
+        Ride ride3 = new Ride("3", new Localization(54,23), new Localization(52,21), "Marcel",
+                new Price(52,Currency.EURO), RideStatus.PENDING);
+        rideRepositorySQL.save(ride1);
+        rideRepositorySQL.save(ride2);
+        rideRepositorySQL.save(ride3);
+
+        //When
+        webTestClient.get()
+                .uri("/ride/assignPendings")
+                .exchange()
+                .expectStatus().isOk();
+
+        System.out.println("********************"+rideRepositorySQL.pendingRides());
+        System.out.println("********************"+rideRepositorySQL.getRides());
+
+        assertEquals(1, rideRepositorySQL.pendingRides().size());
+        assertEquals(2, rideRepositorySQL.getRides().stream().filter(rides->rides.getStatus().equals(RideStatus.FOUND)).count());
     }
 }

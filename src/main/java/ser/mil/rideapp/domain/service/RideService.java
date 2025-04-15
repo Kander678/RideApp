@@ -42,6 +42,9 @@ public class RideService {
             pendingRide.setStatus(RideStatus.FOUND);
             availableDriver.setAvailable(false);
 
+            rideRepository.save(pendingRide);
+            rideRepository.save(availableDriver);
+
             LOGGER.info("Pasażer {} został sparowany z kierowcą {}", pendingRide.getCustomer(), availableDriver.getFirstName());
         }
 

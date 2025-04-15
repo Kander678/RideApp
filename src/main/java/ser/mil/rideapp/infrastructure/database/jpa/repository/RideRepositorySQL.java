@@ -29,6 +29,11 @@ public class RideRepositorySQL implements RideRepository, ApplicationRunner {
     }
 
     @Override
+    public void save(Driver driver) {
+        driverRepository.save(mapToDriverEntity(driver));
+    }
+
+    @Override
     public List<Ride> getRides() {
         return rideRepository.findAll().stream().map(RideRepositorySQL::mapToRide).collect(Collectors.toList());
     }

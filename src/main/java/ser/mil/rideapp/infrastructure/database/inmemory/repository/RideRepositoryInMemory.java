@@ -29,6 +29,12 @@ public class RideRepositoryInMemory implements RideRepository {
     }
 
     @Override
+    public void save(Driver driver) {
+        drivers.add(driver);
+        System.out.println(driver);
+    }
+
+    @Override
     public List<Driver> getDrivers() {
         return drivers;
     }
