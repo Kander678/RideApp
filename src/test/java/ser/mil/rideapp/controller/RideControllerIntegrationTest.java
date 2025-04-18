@@ -74,14 +74,14 @@ class RideControllerIntegrationTest {
     @Test
     void pairPassengerWithDriver_oneRide_oneDriver() {
         //Given
-        Ride ride1 = new Ride(
+        Ride ride = new Ride(
                 "1",
                 new Localization(52, 21),
                 new Localization(50, 19),
                 "Kuba",
                 new Price(50, Currency.PLN),
                 RideStatus.PENDING);
-        rideRepositorySQL.save(ride1);
+        rideRepositorySQL.save(ride);
 
         //When
         webTestClient.get()
@@ -98,11 +98,11 @@ class RideControllerIntegrationTest {
         Ride foundRide = foundRides.getFirst();
 
         assertEquals(0, rideRepositorySQL.pendingRides().size());
-        assertEquals(ride1.getFrom(), foundRide.getFrom());
-        assertEquals(ride1.getTo(), foundRide.getTo());
-        assertEquals(ride1.getCustomer(), foundRide.getCustomer());
-        assertNotEquals(ride1.getStatus(), foundRide.getStatus());
-        assertEquals(ride1.getPrice(), foundRide.getPrice());
+        assertEquals(ride.getFrom(), foundRide.getFrom());
+        assertEquals(ride.getTo(), foundRide.getTo());
+        assertEquals(ride.getCustomer(), foundRide.getCustomer());
+        assertNotEquals(ride.getStatus(), foundRide.getStatus());
+        assertEquals(ride.getPrice(), foundRide.getPrice());
     }
 
     @Test
