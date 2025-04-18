@@ -23,7 +23,7 @@ public class RideEntity {
     private String customer;
     @Embedded
     private PriceEntity price;
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.REMOVE)
     private DriverEntity driver;
     @Enumerated(EnumType.STRING)
     private RideStatus status;
