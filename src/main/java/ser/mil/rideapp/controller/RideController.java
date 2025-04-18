@@ -2,6 +2,7 @@ package ser.mil.rideapp.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import ser.mil.rideapp.controller.request.LocalizationRequest;
 import ser.mil.rideapp.controller.request.RideRequest;
 import ser.mil.rideapp.domain.service.RideService;
 
@@ -17,8 +18,14 @@ public class RideController {
 
     @PostMapping("/request")
     public void requestDrive(@RequestBody RideRequest rideRequest) {
-        rideService.orderRide(rideRequest.startLat(), rideRequest.startLong(), rideRequest.endLat(),
-                rideRequest.endLong(), rideRequest.customer(), rideRequest.baseCurrency(), rideRequest.finalCurrency());
+        rideService.orderRide(
+                rideRequest.startLocalization().lat(),
+                rideRequest.startLocalization().lon(),
+                rideRequest.endLocalization().lat(),
+                rideRequest.endLocalization().lon(),
+                rideRequest.customer(),
+                rideRequest.baseCurrency(),
+                rideRequest.finalCurrency());
     }
 
     @GetMapping("/assignPendings")

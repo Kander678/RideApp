@@ -9,6 +9,7 @@ import java.util.List;
 @Component
 public interface RideRepository {
     void save(Ride ride);
+    void save (Driver driver);
 
     List<Ride> getRides();
 

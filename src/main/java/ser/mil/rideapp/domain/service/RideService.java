@@ -8,6 +8,7 @@ import ser.mil.rideapp.domain.model.*;
 import ser.mil.rideapp.domain.repository.RideRepository;
 
 import java.util.List;
+import java.util.UUID;
 
 @Component
 public class RideService {
@@ -24,7 +25,7 @@ public class RideService {
         Localization startLocalization = new Localization(startLat, startLon);
         Localization endLocalization = new Localization(endLat, endLon);
         Price price = pricingService.calculatePrice(startLocalization, endLocalization, baseCurrency, finalCurrency);
-        rideRepository.save(new Ride("1", startLocalization, endLocalization, customer, price, RideStatus.PENDING));
+        rideRepository.save(new Ride(UUID.randomUUID().toString(), startLocalization, endLocalization, customer, price, RideStatus.PENDING));
     }
 
     public void pairPassengerWithDriver() {
@@ -40,6 +41,9 @@ public class RideService {
             pendingRide.setDriver(availableDriver);
             pendingRide.setStatus(RideStatus.FOUND);
             availableDriver.setAvailable(false);
+
+            rideRepository.save(pendingRide);
+            rideRepository.save(availableDriver);
 
             LOGGER.info("Pasażer {} został sparowany z kierowcą {}", pendingRide.getCustomer(), availableDriver.getFirstName());
         }

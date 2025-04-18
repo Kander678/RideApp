@@ -1,6 +1,5 @@
 package ser.mil.rideapp.infrastructure.database.inmemory.repository;
 
-import org.springframework.boot.autoconfigure.web.client.RestTemplateAutoConfiguration;
 import org.springframework.stereotype.Repository;
 import ser.mil.rideapp.domain.model.Driver;
 import ser.mil.rideapp.domain.model.Ride;
@@ -25,7 +24,11 @@ public class RideRepositoryInMemory implements RideRepository {
     @Override
     public void save(Ride ride) {
         rides.add(ride);
-        System.out.println(ride);
+    }
+
+    @Override
+    public void save(Driver driver) {
+        drivers.add(driver);
     }
 
     @Override
