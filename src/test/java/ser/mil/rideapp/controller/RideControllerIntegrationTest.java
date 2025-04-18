@@ -15,6 +15,7 @@ import ser.mil.rideapp.infrastructure.database.jpa.repository.DriverRepositorySp
 
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -75,10 +76,10 @@ class RideControllerIntegrationTest {
         //Given
         Ride ride1 = new Ride(
                 "1",
-                new Localization(52,21),
-                new Localization(50,19),
+                new Localization(52, 21),
+                new Localization(50, 19),
                 "Kuba",
-                new Price(50,Currency.PLN),
+                new Price(50, Currency.PLN),
                 RideStatus.PENDING);
         rideRepositorySQL.save(ride1);
 
@@ -89,23 +90,30 @@ class RideControllerIntegrationTest {
                 .expectStatus().isOk();
 
         //Then
-        Ride ride2=rideRepositorySQL.getRides().stream().filter(rides->rides.getStatus().equals(RideStatus.FOUND)).findFirst().get();
-        assertEquals(0,rideRepositorySQL.pendingRides().size());
-        assertEquals(ride1.getFrom(),ride2.getFrom());
-        assertEquals(ride1.getTo(),ride2.getTo());
-        assertEquals(ride1.getCustomer(),ride2.getCustomer());
-        assertNotEquals(ride1.getStatus(),ride2.getStatus());
-        assertEquals(ride1.getPrice(),ride2.getPrice());
+        List<Ride> foundRides=rideRepositorySQL.getRides().stream()
+                .filter(rides -> rides.getStatus().equals(RideStatus.FOUND))
+                .toList();
+
+        assertEquals(1, foundRides.size());
+        Ride foundRide = foundRides.getFirst();
+
+        assertEquals(0, rideRepositorySQL.pendingRides().size());
+        assertEquals(ride1.getFrom(), foundRide.getFrom());
+        assertEquals(ride1.getTo(), foundRide.getTo());
+        assertEquals(ride1.getCustomer(), foundRide.getCustomer());
+        assertNotEquals(ride1.getStatus(), foundRide.getStatus());
+        assertEquals(ride1.getPrice(), foundRide.getPrice());
     }
+
     @Test
-    void pairPassengerWithDriver_threeRide_twoDriver(){
+    void pairPassengerWithDriver_threeRide_twoDriver() {
         //Given
-        Ride ride1 = new Ride("1", new Localization(52,21), new Localization(50,19), "Kuba",
-                new Price(50,Currency.PLN), RideStatus.PENDING);
-        Ride ride2 = new Ride("2", new Localization(53,22), new Localization(51,20), "Marcin",
-                new Price(51,Currency.USD), RideStatus.PENDING);
-        Ride ride3 = new Ride("3", new Localization(54,23), new Localization(52,21), "Marcel",
-                new Price(52,Currency.EURO), RideStatus.PENDING);
+        Ride ride1 = new Ride("1", new Localization(52, 21), new Localization(50, 19), "Kuba",
+                new Price(50, Currency.PLN), RideStatus.PENDING);
+        Ride ride2 = new Ride("2", new Localization(53, 22), new Localization(51, 20), "Marcin",
+                new Price(51, Currency.USD), RideStatus.PENDING);
+        Ride ride3 = new Ride("3", new Localization(54, 23), new Localization(52, 21), "Marcel",
+                new Price(52, Currency.EURO), RideStatus.PENDING);
         rideRepositorySQL.save(ride1);
         rideRepositorySQL.save(ride2);
         rideRepositorySQL.save(ride3);
@@ -116,10 +124,7 @@ class RideControllerIntegrationTest {
                 .exchange()
                 .expectStatus().isOk();
 
-        System.out.println("********************"+rideRepositorySQL.pendingRides());
-        System.out.println("********************"+rideRepositorySQL.getRides());
-
         assertEquals(1, rideRepositorySQL.pendingRides().size());
-        assertEquals(2, rideRepositorySQL.getRides().stream().filter(rides->rides.getStatus().equals(RideStatus.FOUND)).count());
+        assertEquals(2, rideRepositorySQL.getRides().stream().filter(rides -> rides.getStatus().equals(RideStatus.FOUND)).count());
     }
 }
