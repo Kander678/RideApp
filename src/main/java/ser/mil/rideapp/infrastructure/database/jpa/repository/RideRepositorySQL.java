@@ -59,6 +59,16 @@ public class RideRepositorySQL implements RideRepository, ApplicationRunner {
         driverRepository.saveAll(drivers);
     }
 
+    public void clearDatabase() {
+        getRides().forEach(ride -> {
+                    ride.setDriver(null);
+                    save(ride);
+                }
+        );
+        rideRepository.deleteAll();
+        driverRepository.deleteAll();
+    }
+
     private static RideEntity mapToRideEntity(Ride ride) {
         return new RideEntity(ride.getId(), mapToLocalizationEntity(ride.getFrom()), mapToLocalizationEntity(ride.getTo()), ride.getCustomer(), mapToPriceEntity(ride.getPrice()), mapToDriverEntity(ride.getDriver()), ride.getStatus());
     }
@@ -92,4 +102,5 @@ public class RideRepositorySQL implements RideRepository, ApplicationRunner {
     private static Price mapToPrice(PriceEntity price) {
         return new Price(price.getAmount(), price.getCurrency());
     }
+
 }
