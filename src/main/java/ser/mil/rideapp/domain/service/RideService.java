@@ -38,6 +38,11 @@ public class RideService {
             Ride pendingRide = rides.removeFirst();
             Driver availableDriver = drivers.removeFirst();
 
+            if(pendingRide.getProvider() != availableDriver.getProvider()) {
+                LOGGER.warn("Nie można sparować pasażera {} i kierowcy {} - różni providerzy!", pendingRide.getCustomer(), availableDriver.getFirstName());
+                continue;
+            }
+
             pendingRide.setDriver(availableDriver);
             pendingRide.setStatus(RideStatus.FOUND);
             availableDriver.setAvailable(false);
