@@ -14,7 +14,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest
-class PairPassengersBoltSchedulerIntegrationTest {
+class PairPassengersFreeNowSchedulerIntegrationTest {
     @Autowired
     private RideRepositorySQL rideRepository;
     @Autowired
@@ -23,14 +23,14 @@ class PairPassengersBoltSchedulerIntegrationTest {
     @BeforeEach
     void setUp() {
         rideRepository.clearDatabase();
-        List<DriverEntity> drivers = List.of(new DriverEntity("1", "Robert", "Lewandowski", true, Provider.BOLT), new DriverEntity("2", "Kuba", "Marcinowski", true,Provider.BOLT));
+        List<DriverEntity> drivers = List.of(new DriverEntity("1", "Robert", "Lewandowski", true, Provider.FREENOW), new DriverEntity("2", "Kuba", "Marcinowski", true, Provider.BOLT));
         driverRepositorySpringData.saveAll(drivers);
     }
 
     @Test
     void shouldPairPassenger() {
         //Given
-        rideRepository.save(new Ride("1", new Localization(52, 21), new Localization(50, 19), "Kuba", new Price(50, Currency.PLN), RideStatus.PENDING,Provider.BOLT));
+        rideRepository.save(new Ride("1", new Localization(52, 21), new Localization(50, 19), "Kuba", new Price(50, Currency.PLN), RideStatus.PENDING, Provider.FREENOW));
 
         //When //Then
         Awaitility.await().until(this::checkIfRideAssigned);

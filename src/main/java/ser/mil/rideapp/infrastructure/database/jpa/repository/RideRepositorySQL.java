@@ -24,7 +24,7 @@ public class RideRepositorySQL implements RideRepository, ApplicationRunner {
     }
 
     @Override
-    public void save(Ride ride) {
+    public void save(Ride ride)  {
         rideRepository.save(mapToRideEntity(ride));
     }
 
