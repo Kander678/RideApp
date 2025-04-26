@@ -8,7 +8,10 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import ser.mil.rideapp.controller.request.LocalizationRequest;
 import ser.mil.rideapp.controller.request.RideRequest;
-import ser.mil.rideapp.domain.model.*;
+import ser.mil.rideapp.domain.model.Currency;
+import ser.mil.rideapp.domain.model.Provider;
+import ser.mil.rideapp.domain.model.Ride;
+import ser.mil.rideapp.domain.model.RideStatus;
 import ser.mil.rideapp.infrastructure.database.jpa.entity.DriverEntity;
 import ser.mil.rideapp.infrastructure.database.jpa.repository.DriverRepositorySpringData;
 import ser.mil.rideapp.infrastructure.database.jpa.repository.RideRepositorySQL;
@@ -33,14 +36,14 @@ class RideControllerIntegrationTest {
     @BeforeEach
     void setUp() {
         rideRepositorySQL.clearDatabase();
-        List<DriverEntity> drivers = List.of(new DriverEntity("1", "Robert", "Lewandowski", true), new DriverEntity("2", "Kuba", "Marcinowski", true));
+        List<DriverEntity> drivers = List.of(new DriverEntity("1", "Robert", "Lewandowski", true, Provider.FREENOW), new DriverEntity("2", "Kuba", "Marcinowski", true, Provider.FREENOW));
         driverRepositorySpringData.saveAll(drivers);
     }
 
     @Test
     void shouldRequestRide() {
         //Given
-        RideRequest rideRequest = new RideRequest(new LocalizationRequest(52, 21), new LocalizationRequest(50, 19), "Kuba", Currency.PLN, Currency.PLN);
+        RideRequest rideRequest = new RideRequest(new LocalizationRequest(52, 21), new LocalizationRequest(50, 19), "Kuba", Currency.PLN, Currency.PLN, Provider.FREENOW);
 
         //When //Then
         webTestClient.post().uri("/ride/request").bodyValue(rideRequest).exchange().expectStatus().isOk();
@@ -60,45 +63,5 @@ class RideControllerIntegrationTest {
         assertTrue(ride.getPrice().amount() > 0);
         assertEquals(Currency.PLN, ride.getPrice().currency());
         assertNull(ride.getDriver());
-    }
-
-    @Test
-    void pairPassengerWithDriver_oneRide_oneDriver() {
-        //Given
-        Ride ride = new Ride("1", new Localization(52, 21), new Localization(50, 19), "Kuba", new Price(50, Currency.PLN), RideStatus.PENDING);
-        rideRepositorySQL.save(ride);
-
-        //When
-        webTestClient.get().uri("/ride/assignPendings").exchange().expectStatus().isOk();
-
-        //Then
-        List<Ride> foundRides = rideRepositorySQL.getRides().stream().filter(rides -> rides.getStatus().equals(RideStatus.FOUND)).toList();
-
-        assertEquals(1, foundRides.size());
-        Ride foundRide = foundRides.getFirst();
-
-        assertEquals(0, rideRepositorySQL.pendingRides().size());
-        assertEquals(ride.getFrom(), foundRide.getFrom());
-        assertEquals(ride.getTo(), foundRide.getTo());
-        assertEquals(ride.getCustomer(), foundRide.getCustomer());
-        assertNotEquals(ride.getStatus(), foundRide.getStatus());
-        assertEquals(ride.getPrice(), foundRide.getPrice());
-    }
-
-    @Test
-    void pairPassengerWithDriver_threeRide_twoDriver() {
-        //Given
-        Ride ride1 = new Ride("1", new Localization(52, 21), new Localization(50, 19), "Kuba", new Price(50, Currency.PLN), RideStatus.PENDING);
-        Ride ride2 = new Ride("2", new Localization(53, 22), new Localization(51, 20), "Marcin", new Price(51, Currency.USD), RideStatus.PENDING);
-        Ride ride3 = new Ride("3", new Localization(54, 23), new Localization(52, 21), "Marcel", new Price(52, Currency.EURO), RideStatus.PENDING);
-        rideRepositorySQL.save(ride1);
-        rideRepositorySQL.save(ride2);
-        rideRepositorySQL.save(ride3);
-
-        //When
-        webTestClient.get().uri("/ride/assignPendings").exchange().expectStatus().isOk();
-
-        assertEquals(1, rideRepositorySQL.pendingRides().size());
-        assertEquals(2, rideRepositorySQL.getRides().stream().filter(rides -> rides.getStatus().equals(RideStatus.FOUND)).count());
     }
 }

@@ -11,16 +11,19 @@ public class Ride {
     private Driver driver;
     private RideStatus status;
 
-    public Ride(String id, Localization from, Localization to, String customer, Price price, RideStatus status) {
+    private Provider provider;
+
+    public Ride(String id, Localization from, Localization to, String customer, Price price, RideStatus status, Provider provider) {
         this.id = id;
         this.from = from;
         this.to = to;
         this.customer = customer;
         this.price = price;
         this.status = status;
+        this.provider = provider;
     }
 
-    public Ride(String id, Localization from, Localization to, String customer, Price price, Driver driver, RideStatus status) {
+    public Ride(String id, Localization from, Localization to, String customer, Price price, Driver driver, RideStatus status, Provider provider) {
         this.id = id;
         this.from = from;
         this.to = to;
@@ -28,6 +31,7 @@ public class Ride {
         this.price = price;
         this.driver = driver;
         this.status = status;
+        this.provider = provider;
     }
 
     public String getId() {
@@ -64,6 +68,14 @@ public class Ride {
 
     public void setStatus(RideStatus status) {
         this.status = status;
+    }
+
+    public Provider getProvider() {
+        return provider;
+    }
+
+    public void setProvider(Provider provider) {
+        this.provider = provider;
     }
 
     @Override

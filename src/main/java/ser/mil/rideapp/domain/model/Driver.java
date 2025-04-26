@@ -5,19 +5,22 @@ public class Driver {
     private final String firstName;
     private final String lastName;
     private boolean available;
+    private Provider provider;
 
-    public Driver(String id, String firstName, String lastName) {
+    public Driver(String id, String firstName, String lastName,Provider provider) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
+        this.provider = provider;
         available = true;
     }
 
-    public Driver(String id, String firstName, String lastName, boolean available) {
+    public Driver(String id, String firstName, String lastName, boolean available, Provider provider) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.available = available;
+        this.provider = provider;
     }
 
     public String getId() {
@@ -38,6 +41,14 @@ public class Driver {
 
     public void setAvailable(boolean available) {
         this.available = available;
+    }
+
+    public Provider getProvider() {
+        return provider;
+    }
+
+    public void setProvider(Provider provider) {
+        this.provider = provider;
     }
 
     @Override

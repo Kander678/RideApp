@@ -21,22 +21,27 @@ public class RideService {
         this.rideRepository = rideRepositorySQL;
     }
 
-    public void orderRide(double startLat, double startLon, double endLat, double endLon, String customer, Currency baseCurrency, Currency finalCurrency) {
+    public void orderRide(double startLat, double startLon, double endLat, double endLon, String customer, Currency baseCurrency, Currency finalCurrency,Provider provider) {
         Localization startLocalization = new Localization(startLat, startLon);
         Localization endLocalization = new Localization(endLat, endLon);
         Price price = pricingService.calculatePrice(startLocalization, endLocalization, baseCurrency, finalCurrency);
-        rideRepository.save(new Ride(UUID.randomUUID().toString(), startLocalization, endLocalization, customer, price, RideStatus.PENDING));
+        rideRepository.save(new Ride(UUID.randomUUID().toString(), startLocalization, endLocalization, customer, price, RideStatus.PENDING,provider));
     }
 
-    public void pairPassengerWithDriver() {
+    public void pairPassengerWithDriver(Provider provider) {
         LOGGER.debug("Rozpoczęcie procesu parowania pasażera z kierowcą...");
 
-        List<Ride> rides = rideRepository.pendingRides();
-        List<Driver> drivers = rideRepository.availableDrivers();
+        List<Ride> rides = rideRepository.pendingRides(provider);
+        List<Driver> drivers = rideRepository.availableDrivers(provider);
 
         while (!rides.isEmpty() && !drivers.isEmpty()) {
             Ride pendingRide = rides.removeFirst();
             Driver availableDriver = drivers.removeFirst();
+
+            if(pendingRide.getProvider() != availableDriver.getProvider()) {
+                LOGGER.warn("Nie można sparować pasażera {} i kierowcy {} - różni providerzy!", pendingRide.getCustomer(), availableDriver.getFirstName());
+                continue;
+            }
 
             pendingRide.setDriver(availableDriver);
             pendingRide.setStatus(RideStatus.FOUND);
