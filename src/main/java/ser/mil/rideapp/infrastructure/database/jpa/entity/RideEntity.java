@@ -1,6 +1,7 @@
 package ser.mil.rideapp.infrastructure.database.jpa.entity;
 
 import jakarta.persistence.*;
+import ser.mil.rideapp.domain.model.Provider;
 import ser.mil.rideapp.domain.model.RideStatus;
 
 @Entity
@@ -28,10 +29,12 @@ public class RideEntity {
     @Enumerated(EnumType.STRING)
     private RideStatus status;
 
+    private Provider provider;
+
     public RideEntity() {
     }
 
-    public RideEntity(String id, LocalizationEntity startLocation, LocalizationEntity endLocation, String customer, PriceEntity price, DriverEntity driver, RideStatus status) {
+    public RideEntity(String id, LocalizationEntity startLocation, LocalizationEntity endLocation, String customer, PriceEntity price, DriverEntity driver, RideStatus status,Provider provider) {
         this.id = id;
         this.startLocation = startLocation;
         this.endLocation = endLocation;
@@ -39,6 +42,7 @@ public class RideEntity {
         this.price = price;
         this.driver = driver;
         this.status = status;
+        this.provider = provider;
     }
 
     public String getId() {
@@ -95,5 +99,13 @@ public class RideEntity {
 
     public void setStatus(RideStatus status) {
         this.status = status;
+    }
+
+    public Provider getProvider() {
+        return provider;
+    }
+
+    public void setProvider(Provider provider) {
+        this.provider = provider;
     }
 }

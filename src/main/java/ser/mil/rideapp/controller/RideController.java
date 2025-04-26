@@ -25,12 +25,8 @@ public class RideController {
                 rideRequest.endLocalization().lon(),
                 rideRequest.customer(),
                 rideRequest.baseCurrency(),
-                rideRequest.finalCurrency());
-    }
-
-    @GetMapping("/assignPendings")
-    public void getPending() {
-        rideService.pairPassengerWithDriver();
+                rideRequest.finalCurrency(),
+                rideRequest.provider());
     }
 
 }

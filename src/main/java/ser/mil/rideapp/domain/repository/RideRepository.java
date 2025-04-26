@@ -2,6 +2,7 @@ package ser.mil.rideapp.domain.repository;
 
 import org.springframework.stereotype.Component;
 import ser.mil.rideapp.domain.model.Driver;
+import ser.mil.rideapp.domain.model.Provider;
 import ser.mil.rideapp.domain.model.Ride;
 
 import java.util.List;
@@ -15,7 +16,7 @@ public interface RideRepository {
 
     List<Driver> getDrivers();
 
-    List<Ride> pendingRides();
+    List<Ride> pendingRides(Provider provider);
 
-    List<Driver> availableDrivers();
+    List<Driver> availableDrivers(Provider provider);
 }

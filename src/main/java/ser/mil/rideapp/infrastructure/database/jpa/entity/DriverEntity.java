@@ -2,6 +2,7 @@ package ser.mil.rideapp.infrastructure.database.jpa.entity;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import ser.mil.rideapp.domain.model.Provider;
 
 @Entity
 public class DriverEntity {
@@ -10,16 +11,18 @@ public class DriverEntity {
     private String firstName;
     private String lastName;
     private boolean available;
+    private Provider provider;
 
     public DriverEntity() {
 
     }
 
-    public DriverEntity(String id, String firstName, String lastName, boolean available) {
+    public DriverEntity(String id, String firstName, String lastName, boolean available, Provider provider) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.available = available;
+        this.provider = provider;
     }
 
     public String getId() {
@@ -52,5 +55,13 @@ public class DriverEntity {
 
     public void setAvailable(boolean available) {
         this.available = available;
+    }
+
+    public Provider getProvider() {
+        return provider;
+    }
+
+    public void setProvider(Provider provider) {
+        this.provider = provider;
     }
 }

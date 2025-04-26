@@ -2,6 +2,7 @@ package ser.mil.rideapp.infrastructure.database.inmemory.repository;
 
 import org.springframework.stereotype.Repository;
 import ser.mil.rideapp.domain.model.Driver;
+import ser.mil.rideapp.domain.model.Provider;
 import ser.mil.rideapp.domain.model.Ride;
 import ser.mil.rideapp.domain.model.RideStatus;
 import ser.mil.rideapp.domain.repository.RideRepository;
@@ -17,8 +18,8 @@ public class RideRepositoryInMemory implements RideRepository {
     private final List<Ride> rides = new ArrayList<>();
 
     public RideRepositoryInMemory() {
-        drivers = new ArrayList<>(List.of(new Driver("1", "Robert", "Lewandowski"),
-                new Driver("2", "Mateusz", "Maklowicz")));
+        drivers = new ArrayList<>(List.of(new Driver("1", "Robert", "Lewandowski", Provider.FREENOW),
+                new Driver("2", "Mateusz", "Maklowicz", Provider.BOLT)));
     }
 
     @Override
@@ -37,16 +38,16 @@ public class RideRepositoryInMemory implements RideRepository {
     }
 
     @Override
-    public List<Ride> pendingRides() {
+    public List<Ride> pendingRides(Provider provider) {
         return rides.stream()
-                .filter(ride -> ride.getStatus().equals(RideStatus.PENDING))
+                .filter(ride -> ride.getStatus().equals(RideStatus.PENDING) && ride.getProvider() == provider)
                 .collect(Collectors.toList());
     }
 
     @Override
-    public List<Driver> availableDrivers() {
+    public List<Driver> availableDrivers(Provider provider) {
         return drivers.stream().
-                filter(Driver::getAvailable)
+                filter(driver -> driver.getAvailable() && driver.getProvider() == provider)
                 .collect(Collectors.toList());
     }
 

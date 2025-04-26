@@ -9,7 +9,16 @@ import ser.mil.rideapp.domain.service.RideService;
 @EnableScheduling
 public class SchedulerConfig {
     @Bean
-    public PairPassengersScheduler pairPassengersScheduler(RideService rideService) {
-        return new PairPassengersScheduler(rideService);
+    public PairPassengersUberScheduler pairPassengersUberScheduler(RideService rideService) {
+        return new PairPassengersUberScheduler(rideService);
+    }
+
+    @Bean
+    public PairPassengersFreeNowScheduler pairPassengersFreeNowScheduler(RideService rideService) {
+        return new PairPassengersFreeNowScheduler(rideService);
+    }
+    @Bean
+    public PairPassengersBoltScheduler pairPassengersBoltScheduler(RideService rideService) {
+        return new PairPassengersBoltScheduler(rideService);
     }
 }
