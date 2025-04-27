@@ -1,17 +1,22 @@
 package ser.mil.rideapp.domain.model;
 
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 public class Driver {
     private final String id;
     private final String firstName;
     private final String lastName;
     private boolean available;
-    private Provider provider;
+    private Set<Provider> provider;
 
     public Driver(String id, String firstName, String lastName,Provider provider) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
-        this.provider = provider;
+        this.provider=new HashSet<>();
+        this.provider.add(provider);
         available = true;
     }
 
@@ -20,7 +25,16 @@ public class Driver {
         this.firstName = firstName;
         this.lastName = lastName;
         this.available = available;
-        this.provider = provider;
+        this.provider=new HashSet<>();
+        this.provider.add(provider);
+    }
+
+    public Driver(String id, String firstName, String lastName, boolean available, Set<Provider> provider) {
+        this.id = id;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.available = available;
+        this.provider=provider;
     }
 
     public String getId() {
@@ -43,12 +57,19 @@ public class Driver {
         this.available = available;
     }
 
-    public Provider getProvider() {
+    public Set<Provider> getProvider() {
         return provider;
     }
 
-    public void setProvider(Provider provider) {
+    public void setProvider(Set<Provider> provider) {
         this.provider = provider;
+    }
+
+    public void addProvider(Provider provider) {
+        this.provider.add(provider);
+    }
+    public void removeProvider(Provider provider) {
+        this.provider.remove(provider);
     }
 
     @Override

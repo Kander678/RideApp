@@ -19,4 +19,7 @@ public interface RideRepository {
     List<Ride> pendingRides(Provider provider);
 
     List<Driver> availableDrivers(Provider provider);
+
+    Driver findDriverByFirstName(String name);
+
 }

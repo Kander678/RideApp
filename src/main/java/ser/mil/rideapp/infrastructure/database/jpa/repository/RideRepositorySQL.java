@@ -11,6 +11,7 @@ import ser.mil.rideapp.infrastructure.database.jpa.entity.PriceEntity;
 import ser.mil.rideapp.infrastructure.database.jpa.entity.RideEntity;
 
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Component
@@ -54,6 +55,11 @@ public class RideRepositorySQL implements RideRepository, ApplicationRunner {
     }
 
     @Override
+    public Driver findDriverByFirstName(String name) {
+        return mapToDriver(driverRepository.findDriverByFirstName(name));
+    }
+
+    @Override
     public void run(ApplicationArguments args) {
         List<DriverEntity> drivers = List.of(new DriverEntity("1", "Robert", "Lewandowski", true,Provider.FREENOW), new DriverEntity("2", "Kuba", "Marcinowski", true,Provider.FREENOW));
         driverRepository.saveAll(drivers);
@@ -72,6 +78,7 @@ public class RideRepositorySQL implements RideRepository, ApplicationRunner {
     private static RideEntity mapToRideEntity(Ride ride) {
         return new RideEntity(ride.getId(), mapToLocalizationEntity(ride.getFrom()), mapToLocalizationEntity(ride.getTo()), ride.getCustomer(), mapToPriceEntity(ride.getPrice()), mapToDriverEntity(ride.getDriver()), ride.getStatus(),ride.getProvider());
     }
+
 
     private static Ride mapToRide(RideEntity entity) {
         return new Ride(entity.getId(), mapToLocalization(entity.getStartLocation()), mapToLocalization(entity.getEndLocation()), entity.getCustomer(), mapToPrice(entity.getPrice()), mapToDriver(entity.getDriver()), entity.getStatus(),entity.getProvider());

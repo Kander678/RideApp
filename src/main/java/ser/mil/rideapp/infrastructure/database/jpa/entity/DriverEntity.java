@@ -1,8 +1,10 @@
 package ser.mil.rideapp.infrastructure.database.jpa.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import ser.mil.rideapp.domain.model.Provider;
+
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 public class DriverEntity {
@@ -11,7 +13,9 @@ public class DriverEntity {
     private String firstName;
     private String lastName;
     private boolean available;
-    private Provider provider;
+    @ElementCollection(fetch = FetchType.EAGER)
+    @Enumerated(EnumType.STRING)
+    private Set<Provider> provider;
 
     public DriverEntity() {
 
@@ -22,7 +26,16 @@ public class DriverEntity {
         this.firstName = firstName;
         this.lastName = lastName;
         this.available = available;
-        this.provider = provider;
+        this.provider=new HashSet<>();
+        this.provider.add(provider);
+    }
+
+    public DriverEntity(String id, String firstName, String lastName, boolean available, Set<Provider> provider) {
+        this.id = id;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.available = available;
+        this.provider=provider;
     }
 
     public String getId() {
@@ -57,11 +70,19 @@ public class DriverEntity {
         this.available = available;
     }
 
-    public Provider getProvider() {
+    public Set<Provider> getProvider() {
         return provider;
     }
 
-    public void setProvider(Provider provider) {
+    public void setProvider(Set<Provider> provider) {
         this.provider = provider;
+    }
+
+    public void addProvider(Provider provider) {
+        this.provider.add(provider);
+    }
+
+    public void removeProvider(Provider provider) {
+        this.provider.remove(provider);
     }
 }

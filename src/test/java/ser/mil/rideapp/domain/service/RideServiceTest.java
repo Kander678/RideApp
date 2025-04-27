@@ -11,6 +11,7 @@ import ser.mil.rideapp.domain.repository.RideRepository;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;

@@ -38,7 +38,7 @@ public class RideService {
             Ride pendingRide = rides.removeFirst();
             Driver availableDriver = drivers.removeFirst();
 
-            if(pendingRide.getProvider() != availableDriver.getProvider()) {
+            if(!availableDriver.getProvider().contains(pendingRide.getProvider())) {
                 LOGGER.warn("Nie można sparować pasażera {} i kierowcy {} - różni providerzy!", pendingRide.getCustomer(), availableDriver.getFirstName());
                 continue;
             }
