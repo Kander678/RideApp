@@ -22,26 +22,26 @@ public class DriverService {
         this.rideRepository = rideRepositorySQL;
     }
 
-    public void addDriver(String firstName, String lastName, boolean available, Provider provider) {
+    public void addDriver(String firstName, String lastName, Provider provider) {
         LOGGER.debug("Rozpoczęcie dodawania kierowcy...");
-        Driver driver = new Driver(UUID.randomUUID().toString(), firstName, lastName, available, provider);
+        Driver driver = new Driver(UUID.randomUUID().toString(), firstName, lastName, true, provider);
         rideRepository.save(driver);
         LOGGER.info("Kierowca {} został dodany ", driver.getFirstName());
     }
 
-    public void addProvider(String firstName,Provider provider) {
-        Driver driver=rideRepository.findDriverByFirstName(firstName);
+    public void addProvider(String firstName,String lastName,Provider provider) {
+        Driver driver=rideRepository.findDriverByFirstNameAndLastName(firstName,lastName);
         if(driver==null) {
-            return;
+            throw new RuntimeException("Driver not found");
         }
         driver.addProvider(provider);
         rideRepository.save(driver);
     }
 
-    public void removeProvider(String firstName,Provider provider) {
-        Driver driver=rideRepository.findDriverByFirstName(firstName);
+    public void removeProvider(String firstName,String lastName,Provider provider) {
+        Driver driver=rideRepository.findDriverByFirstNameAndLastName(firstName,lastName);
         if(driver==null) {
-            return;
+            throw new RuntimeException("Driver not found");
         }
         driver.removeProvider(provider);
         rideRepository.save(driver);

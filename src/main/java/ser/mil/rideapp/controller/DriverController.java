@@ -17,20 +17,22 @@ public class DriverController {
     public DriverController(DriverService driverService) {
         this.driverService = driverService;
     }
+
     @PostMapping("/create")
     public void addDriver(DriverRequest driverRequest) {
         driverService.addDriver(
                 driverRequest.firstName(),
                 driverRequest.lastName(),
-                driverRequest.available(),
                 driverRequest.provider());
     }
+
     @PostMapping("/addProvider")
-    public void addProvider(String firstName, Provider provider){
-        driverService.addProvider(firstName, provider);
+    public void addProvider(String firstName,String lastName, Provider provider) {
+        driverService.addProvider(firstName, lastName,provider);
     }
+
     @PostMapping("/removeProvider")
-    public void removeProvider(String firstName, Provider provider){
-        driverService.removeProvider(firstName, provider);
+    public void removeProvider(String firstName, String lastName,Provider provider) {
+        driverService.removeProvider(firstName, lastName,provider);
     }
 }

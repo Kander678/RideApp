@@ -4,6 +4,7 @@ import org.springframework.stereotype.Component;
 import ser.mil.rideapp.domain.model.Driver;
 import ser.mil.rideapp.domain.model.Provider;
 import ser.mil.rideapp.domain.model.Ride;
+import ser.mil.rideapp.infrastructure.database.jpa.entity.DriverEntity;
 
 import java.util.List;
 
@@ -20,6 +21,6 @@ public interface RideRepository {
 
     List<Driver> availableDrivers(Provider provider);
 
-    Driver findDriverByFirstName(String name);
+    Driver findDriverByFirstNameAndLastName(String firstName, String lastName);
 
 }

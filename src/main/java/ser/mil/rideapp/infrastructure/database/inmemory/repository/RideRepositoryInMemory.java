@@ -53,9 +53,10 @@ public class RideRepositoryInMemory implements RideRepository {
     }
 
     @Override
-    public Driver findDriverByFirstName(String name) {
-        return drivers.stream().filter(driver -> driver.getFirstName().equals(name)).findFirst().orElse(null);
+    public Driver findDriverByFirstNameAndLastName(String firstName, String lastName) {
+        return drivers.stream().filter(driver -> driver.getFirstName().equals(firstName)&&driver.getLastName().equals(lastName)).findFirst().orElse(null);
     }
+
 
     @Override
     public List<Ride> getRides() {
