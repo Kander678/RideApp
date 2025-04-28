@@ -17,6 +17,7 @@ import ser.mil.rideapp.infrastructure.database.jpa.repository.DriverRepositorySp
 import ser.mil.rideapp.infrastructure.database.jpa.repository.RideRepositorySQL;
 
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -36,7 +37,7 @@ class RideControllerIntegrationTest {
     @BeforeEach
     void setUp() {
         rideRepositorySQL.clearDatabase();
-        List<DriverEntity> drivers = List.of(new DriverEntity("1", "Robert", "Lewandowski", true, Provider.FREENOW), new DriverEntity("2", "Kuba", "Marcinowski", true, Provider.FREENOW));
+        List<DriverEntity> drivers = List.of(new DriverEntity("1", "Robert", "Lewandowski", true, Set.of(Provider.FREENOW)), new DriverEntity("2", "Kuba", "Marcinowski", true, Set.of(Provider.FREENOW)));
         driverRepositorySpringData.saveAll(drivers);
     }
 

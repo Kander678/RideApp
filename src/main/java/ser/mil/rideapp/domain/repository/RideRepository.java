@@ -10,7 +10,8 @@ import java.util.List;
 @Component
 public interface RideRepository {
     void save(Ride ride);
-    void save (Driver driver);
+
+    void save(Driver driver);
 
     List<Ride> getRides();
 
@@ -19,4 +20,7 @@ public interface RideRepository {
     List<Ride> pendingRides(Provider provider);
 
     List<Driver> availableDrivers(Provider provider);
+
+    Driver getDriverById(String id);
+
 }

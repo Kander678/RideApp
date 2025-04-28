@@ -24,7 +24,7 @@ public class RideRepositorySQL implements RideRepository, ApplicationRunner {
     }
 
     @Override
-    public void save(Ride ride)  {
+    public void save(Ride ride) {
         rideRepository.save(mapToRideEntity(ride));
     }
 
@@ -45,17 +45,23 @@ public class RideRepositorySQL implements RideRepository, ApplicationRunner {
 
     @Override
     public List<Ride> pendingRides(Provider provider) {
-        return rideRepository.getAllByProviderAndStatus(provider,RideStatus.PENDING).stream().map(RideRepositorySQL::mapToRide).collect(Collectors.toList());
+        return rideRepository.getAllByProviderAndStatus(provider, RideStatus.PENDING).stream().map(RideRepositorySQL::mapToRide).collect(Collectors.toList());
     }
 
     @Override
     public List<Driver> availableDrivers(Provider provider) {
-        return driverRepository.getAllByProviderAndAvailable(provider,true).stream().map(RideRepositorySQL::mapToDriver).collect(Collectors.toList());
+        return driverRepository.getAllByProviderAndAvailable(provider, true).stream().map(RideRepositorySQL::mapToDriver).collect(Collectors.toList());
     }
 
     @Override
+    public Driver getDriverById(String id) {
+        return mapToDriver(driverRepository.getDriverById(id));
+    }
+
+
+    @Override
     public void run(ApplicationArguments args) {
-        List<DriverEntity> drivers = List.of(new DriverEntity("1", "Robert", "Lewandowski", true,Provider.FREENOW), new DriverEntity("2", "Kuba", "Marcinowski", true,Provider.FREENOW));
+        List<DriverEntity> drivers = List.of(new DriverEntity("1", "Robert", "Lewandowski", true, Provider.FREENOW), new DriverEntity("2", "Kuba", "Marcinowski", true, Provider.FREENOW));
         driverRepository.saveAll(drivers);
     }
 
@@ -70,21 +76,22 @@ public class RideRepositorySQL implements RideRepository, ApplicationRunner {
     }
 
     private static RideEntity mapToRideEntity(Ride ride) {
-        return new RideEntity(ride.getId(), mapToLocalizationEntity(ride.getFrom()), mapToLocalizationEntity(ride.getTo()), ride.getCustomer(), mapToPriceEntity(ride.getPrice()), mapToDriverEntity(ride.getDriver()), ride.getStatus(),ride.getProvider());
+        return new RideEntity(ride.getId(), mapToLocalizationEntity(ride.getFrom()), mapToLocalizationEntity(ride.getTo()), ride.getCustomer(), mapToPriceEntity(ride.getPrice()), mapToDriverEntity(ride.getDriver()), ride.getStatus(), ride.getProvider());
     }
 
+
     private static Ride mapToRide(RideEntity entity) {
-        return new Ride(entity.getId(), mapToLocalization(entity.getStartLocation()), mapToLocalization(entity.getEndLocation()), entity.getCustomer(), mapToPrice(entity.getPrice()), mapToDriver(entity.getDriver()), entity.getStatus(),entity.getProvider());
+        return new Ride(entity.getId(), mapToLocalization(entity.getStartLocation()), mapToLocalization(entity.getEndLocation()), entity.getCustomer(), mapToPrice(entity.getPrice()), mapToDriver(entity.getDriver()), entity.getStatus(), entity.getProvider());
     }
 
     private static DriverEntity mapToDriverEntity(Driver driver) {
         if (driver == null) return null;
-        return new DriverEntity(driver.getId(), driver.getFirstName(), driver.getLastName(), driver.getAvailable(),driver.getProvider());
+        return new DriverEntity(driver.getId(), driver.getFirstName(), driver.getLastName(), driver.getAvailable(), driver.getProvider());
     }
 
     private static Driver mapToDriver(DriverEntity entity) {
         if (entity == null) return null;
-        return new Driver(entity.getId(), entity.getFirstName(), entity.getLastName(), entity.getAvailable(),entity.getProvider());
+        return new Driver(entity.getId(), entity.getFirstName(), entity.getLastName(), entity.getAvailable(), entity.getProvider());
     }
 
     private static PriceEntity mapToPriceEntity(Price price) {

@@ -47,9 +47,15 @@ public class RideRepositoryInMemory implements RideRepository {
     @Override
     public List<Driver> availableDrivers(Provider provider) {
         return drivers.stream().
-                filter(driver -> driver.getAvailable() && driver.getProvider() == provider)
+                filter(driver -> driver.getAvailable() && driver.getProvider().contains(provider))
                 .collect(Collectors.toList());
     }
+
+    @Override
+    public Driver getDriverById(String id) {
+        return drivers.stream().filter(driver -> driver.getId().equals(id)).findFirst().orElse(null);
+    }
+
 
     @Override
     public List<Ride> getRides() {

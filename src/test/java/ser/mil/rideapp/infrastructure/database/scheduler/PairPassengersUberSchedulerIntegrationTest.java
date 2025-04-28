@@ -11,6 +11,7 @@ import ser.mil.rideapp.infrastructure.database.jpa.repository.DriverRepositorySp
 import ser.mil.rideapp.infrastructure.database.jpa.repository.RideRepositorySQL;
 
 import java.util.List;
+import java.util.Set;
 
 
 @SpringBootTest
