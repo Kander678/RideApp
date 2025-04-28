@@ -4,14 +4,14 @@ import org.springframework.stereotype.Component;
 import ser.mil.rideapp.domain.model.Driver;
 import ser.mil.rideapp.domain.model.Provider;
 import ser.mil.rideapp.domain.model.Ride;
-import ser.mil.rideapp.infrastructure.database.jpa.entity.DriverEntity;
 
 import java.util.List;
 
 @Component
 public interface RideRepository {
     void save(Ride ride);
-    void save (Driver driver);
+
+    void save(Driver driver);
 
     List<Ride> getRides();
 
@@ -21,6 +21,6 @@ public interface RideRepository {
 
     List<Driver> availableDrivers(Provider provider);
 
-    Driver findDriverById(String id);
+    Driver getDriverById(String id);
 
 }

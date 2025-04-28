@@ -9,7 +9,6 @@ import ser.mil.rideapp.domain.repository.RideRepository;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 @Repository
@@ -53,7 +52,7 @@ public class RideRepositoryInMemory implements RideRepository {
     }
 
     @Override
-    public Driver findDriverById(String id) {
+    public Driver getDriverById(String id) {
         return drivers.stream().filter(driver -> driver.getId().equals(id)).findFirst().orElse(null);
     }
 

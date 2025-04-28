@@ -6,9 +6,7 @@ import org.springframework.stereotype.Component;
 import ser.mil.rideapp.domain.model.Driver;
 import ser.mil.rideapp.domain.model.Provider;
 import ser.mil.rideapp.domain.repository.RideRepository;
-import ser.mil.rideapp.infrastructure.database.jpa.repository.RideRepositorySQL;
 
-import java.util.Set;
 import java.util.UUID;
 
 @Component
@@ -30,18 +28,18 @@ public class DriverService {
         return driver;
     }
 
-    public void addProvider(String id,Provider provider) {
-        Driver driver=rideRepository.findDriverById(id);
-        if(driver==null) {
+    public void addProvider(String id, Provider provider) {
+        Driver driver = rideRepository.getDriverById(id);
+        if (driver == null) {
             throw new RuntimeException("Driver not found");
         }
         driver.addProvider(provider);
         rideRepository.save(driver);
     }
 
-    public void removeProvider(String id,Provider provider) {
-        Driver driver=rideRepository.findDriverById(id);
-        if(driver==null) {
+    public void removeProvider(String id, Provider provider) {
+        Driver driver = rideRepository.getDriverById(id);
+        if (driver == null) {
             throw new RuntimeException("Driver not found");
         }
         driver.removeProvider(provider);

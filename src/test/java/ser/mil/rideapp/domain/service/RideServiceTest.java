@@ -230,7 +230,7 @@ class RideServiceTest {
         Driver driver2 = spy(new Driver("2", "Kuba", "Matejczyk", Provider.UBER));
 
         when(rideRepository.pendingRides(Provider.FREENOW)).thenReturn(new ArrayList<>(List.of(ride1, ride2)));
-        when(rideRepository.availableDrivers(Provider.FREENOW)).thenReturn(new ArrayList<>(List.of(driver1,driver2)));
+        when(rideRepository.availableDrivers(Provider.FREENOW)).thenReturn(new ArrayList<>(List.of(driver1, driver2)));
 
         //When
         rideService.pairPassengerWithDriver(Provider.FREENOW);
