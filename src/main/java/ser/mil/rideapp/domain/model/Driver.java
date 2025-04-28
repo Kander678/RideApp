@@ -37,6 +37,15 @@ public class Driver {
         this.provider=provider;
     }
 
+    public Driver(String firstName, String lastName, Provider provider, String id) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.id = id;
+        this.provider=new HashSet<>();
+        this.provider.add(provider);
+        available = true;
+    }
+
     public String getId() {
         return id;
     }

@@ -55,8 +55,8 @@ public class RideRepositorySQL implements RideRepository, ApplicationRunner {
     }
 
     @Override
-    public Driver findDriverByFirstNameAndLastName(String firstName, String lastName) {
-        return mapToDriver(driverRepository.findDriverByFirstNameAndLastName(firstName,lastName));
+    public Driver findDriverById(String id) {
+        return mapToDriver(driverRepository.findDriverById(id));
     }
 
 

@@ -10,5 +10,5 @@ import java.util.List;
 
 public interface DriverRepositorySpringData extends JpaRepository<DriverEntity, String> {
     List<DriverEntity> getAllByProviderAndAvailable(Provider provider, boolean available);
-    DriverEntity findDriverByFirstNameAndLastName(String firstName, String lastName);
+    DriverEntity findDriverById(String id);
 }

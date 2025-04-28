@@ -6,9 +6,7 @@ import org.springframework.stereotype.Component;
 import ser.mil.rideapp.domain.model.*;
 import ser.mil.rideapp.domain.repository.RideRepository;
 
-import java.util.Iterator;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 @Component
@@ -35,30 +33,36 @@ public class RideService {
         List<Ride> rides = rideRepository.pendingRides(provider);
         List<Driver> drivers = rideRepository.availableDrivers(provider);
 
-        Iterator<Ride> rideIterator = rides.iterator();
+        while (!rides.isEmpty() && !drivers.isEmpty()) {
+            Ride pendingRide = rides.getFirst();
 
-        while (rideIterator.hasNext() && !drivers.isEmpty()) {
-            Ride pendingRide = rideIterator.next();
-
-            Optional<Driver> matchingDriverOpt = drivers.stream()
-                    .filter(driver -> driver.getProvider().contains(pendingRide.getProvider()))
-                    .findFirst();
-
-            if (matchingDriverOpt.isPresent()) {
-                Driver availableDriver = matchingDriverOpt.get();
-
-                pendingRide.setDriver(availableDriver);
-                pendingRide.setStatus(RideStatus.FOUND);
-                availableDriver.setAvailable(false);
-
-                rideRepository.save(pendingRide);
-                rideRepository.save(availableDriver);
-
-                LOGGER.info("Pasażer {} został sparowany z kierowcą {}", pendingRide.getCustomer(), availableDriver.getFirstName());
+            Driver matchingDriver = null;
+            for (Driver driver : drivers) {
+                if (driver.getProvider().contains(pendingRide.getProvider())) {
+                    matchingDriver = driver;
+                    break;
+                }
             }
 
-            LOGGER.debug("Zakończono proces parowania. Pozostało {} oczekujących przejazdów i {} dostępnych kierowców.", rides.size(), drivers.size());
+            if (matchingDriver != null) {
+                pendingRide.setDriver(matchingDriver);
+                pendingRide.setStatus(RideStatus.FOUND);
+                matchingDriver.setAvailable(false);
+
+                rideRepository.save(pendingRide);
+                rideRepository.save(matchingDriver);
+
+                LOGGER.info("Pasażer {} został sparowany z kierowcą {}", pendingRide.getCustomer(), matchingDriver.getFirstName());
+
+                drivers.remove(matchingDriver);
+                rides.remove(pendingRide);
+            } else {
+                rides.add(rides.removeFirst());
+                LOGGER.warn("Brak dostępnego kierowcy dla pasażera {}", pendingRide.getCustomer());
+                break;
+            }
         }
 
+        LOGGER.debug("Zakończono proces parowania. Pozostało {} oczekujących przejazdów i {} dostępnych kierowców.", rides.size(), drivers.size());
     }
 }

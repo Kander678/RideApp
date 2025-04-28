@@ -27,12 +27,12 @@ public class DriverController {
     }
 
     @PostMapping("/addProvider")
-    public void addProvider(String firstName,String lastName, Provider provider) {
-        driverService.addProvider(firstName, lastName,provider);
+    public void addProvider(String id, Provider provider) {
+        driverService.addProvider(id,provider);
     }
 
     @PostMapping("/removeProvider")
-    public void removeProvider(String firstName, String lastName,Provider provider) {
-        driverService.removeProvider(firstName, lastName,provider);
+    public void removeProvider(String id,Provider provider) {
+        driverService.removeProvider(id,provider);
     }
 }

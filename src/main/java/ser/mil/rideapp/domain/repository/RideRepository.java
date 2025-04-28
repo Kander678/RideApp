@@ -21,6 +21,6 @@ public interface RideRepository {
 
     List<Driver> availableDrivers(Provider provider);
 
-    Driver findDriverByFirstNameAndLastName(String firstName, String lastName);
+    Driver findDriverById(String id);
 
 }
