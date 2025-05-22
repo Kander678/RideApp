@@ -1,7 +1,6 @@
 package ser.mil.rideapp.domain.model;
 
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 public class Driver {
@@ -9,40 +8,40 @@ public class Driver {
     private final String firstName;
     private final String lastName;
     private boolean available;
-    private Set<Provider> provider;
+    private Set<Provider> providers;
 
-    public Driver(String id, String firstName, String lastName,Provider provider) {
+    public Driver(String id, String firstName, String lastName,Provider providers) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
-        this.provider=new HashSet<>();
-        this.provider.add(provider);
+        this.providers =new HashSet<>();
+        this.providers.add(providers);
         available = true;
     }
 
-    public Driver(String id, String firstName, String lastName, boolean available, Provider provider) {
+    public Driver(String id, String firstName, String lastName, boolean available, Provider providers) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.available = available;
-        this.provider=new HashSet<>();
-        this.provider.add(provider);
+        this.providers =new HashSet<>();
+        this.providers.add(providers);
     }
 
-    public Driver(String id, String firstName, String lastName, boolean available, Set<Provider> provider) {
+    public Driver(String id, String firstName, String lastName, boolean available, Set<Provider> providers) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.available = available;
-        this.provider=provider;
+        this.providers = providers;
     }
 
-    public Driver(String firstName, String lastName, Provider provider, String id) {
+    public Driver(String firstName, String lastName, Provider providers, String id) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.id = id;
-        this.provider=new HashSet<>();
-        this.provider.add(provider);
+        this.providers =new HashSet<>();
+        this.providers.add(providers);
         available = true;
     }
 
@@ -66,19 +65,19 @@ public class Driver {
         this.available = available;
     }
 
-    public Set<Provider> getProvider() {
-        return provider;
+    public Set<Provider> getProviders() {
+        return providers;
     }
 
-    public void setProvider(Set<Provider> provider) {
-        this.provider = provider;
+    public void setProviders(Set<Provider> providers) {
+        this.providers = providers;
     }
 
     public void addProvider(Provider provider) {
-        this.provider.add(provider);
+        this.providers.add(provider);
     }
     public void removeProvider(Provider provider) {
-        this.provider.remove(provider);
+        this.providers.remove(provider);
     }
 
     @Override

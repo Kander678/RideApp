@@ -65,4 +65,6 @@ class RideControllerIntegrationTest {
         assertEquals(Currency.PLN, ride.getPrice().currency());
         assertNull(ride.getDriver());
     }
+
+
 }

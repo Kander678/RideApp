@@ -2,6 +2,7 @@ package ser.mil.rideapp.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import ser.mil.rideapp.controller.request.DriverRequest;
@@ -19,7 +20,7 @@ public class DriverController {
     }
 
     @PostMapping("/create")
-    public void addDriver(DriverRequest driverRequest) {
+    public void addDriver(@RequestBody DriverRequest driverRequest) {
         driverService.addDriver(
                 driverRequest.firstName(),
                 driverRequest.lastName(),

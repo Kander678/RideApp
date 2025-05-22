@@ -38,7 +38,7 @@ public class RideService {
 
             Driver matchingDriver = null;
             for (Driver driver : drivers) {
-                if (driver.getProvider().contains(pendingRide.getProvider())) {
+                if (driver.getProviders().contains(pendingRide.getProvider())) {
                     matchingDriver = driver;
                     break;
                 }

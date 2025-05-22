@@ -22,6 +22,10 @@ public class DriverService {
 
     public Driver addDriver(String firstName, String lastName, Provider provider) {
         LOGGER.debug("Rozpoczęcie dodawania kierowcy...");
+        if(firstName.isEmpty() || lastName.isEmpty()) {
+            throw new RuntimeException("First name or last name cannot be empty");
+        }
+
         Driver driver = new Driver(UUID.randomUUID().toString(), firstName, lastName, true, provider);
         rideRepository.save(driver);
         LOGGER.info("Kierowca {} został dodany ", driver.getFirstName());
