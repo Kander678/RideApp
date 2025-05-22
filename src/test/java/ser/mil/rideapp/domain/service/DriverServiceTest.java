@@ -50,8 +50,8 @@ class DriverServiceTest {
         driverService.addProvider(driver.getId(), provider2);
 
         //Then
-        assertTrue(driver.getProvider().contains(provider1));
-        assertTrue(driver.getProvider().contains(provider2));
+        assertTrue(driver.getProviders().contains(provider1));
+        assertTrue(driver.getProviders().contains(provider2));
     }
 
     @Test
@@ -70,7 +70,7 @@ class DriverServiceTest {
         driverService.removeProvider(driver.getId(), provider2);
 
         //Then
-        assertTrue(driver.getProvider().contains(Provider.FREENOW));
-        assertFalse(driver.getProvider().contains(Provider.BOLT));
+        assertTrue(driver.getProviders().contains(Provider.FREENOW));
+        assertFalse(driver.getProviders().contains(Provider.BOLT));
     }
 }

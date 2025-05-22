@@ -14,7 +14,9 @@ import java.util.List;
 import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
-@SpringBootTest
+@SpringBootTest(properties = {
+        "scheduler.pair-passengers.enabled=true"
+})
 class PairPassengersFreeNowSchedulerIntegrationTest {
     @Autowired
     private RideRepositorySQL rideRepository;

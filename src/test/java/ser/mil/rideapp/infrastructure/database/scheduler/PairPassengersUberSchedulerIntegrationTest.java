@@ -14,7 +14,9 @@ import java.util.List;
 import java.util.Set;
 
 
-@SpringBootTest
+@SpringBootTest(properties = {
+        "scheduler.pair-passengers.enabled=true"
+})
 class PairPassengersUberSchedulerIntegrationTest {
     @Autowired
     private RideRepositorySQL rideRepository;

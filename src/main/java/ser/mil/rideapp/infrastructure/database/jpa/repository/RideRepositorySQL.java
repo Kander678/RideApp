@@ -86,7 +86,7 @@ public class RideRepositorySQL implements RideRepository, ApplicationRunner {
 
     private static DriverEntity mapToDriverEntity(Driver driver) {
         if (driver == null) return null;
-        return new DriverEntity(driver.getId(), driver.getFirstName(), driver.getLastName(), driver.getAvailable(), driver.getProvider());
+        return new DriverEntity(driver.getId(), driver.getFirstName(), driver.getLastName(), driver.getAvailable(), driver.getProviders());
     }
 
     private static Driver mapToDriver(DriverEntity entity) {
